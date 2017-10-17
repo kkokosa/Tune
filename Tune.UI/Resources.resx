@@ -1,0 +1,905 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Samples_Sample0" xml:space="preserve">
+    <value>using System;
+
+namespace Samples
+{
+   public class Echoer
+   {
+      public string Write(string message)
+      {
+         return message;
+      }
+   }
+}</value>
+  </data>
+  <data name="Samples_Sample1" xml:space="preserve">
+    <value>using System;
+
+namespace Samples
+{
+   public class Echoer
+   {
+      public string Write(string message)
+      {
+         var text = new Test() { Text = message };
+         return text.Text;
+      }
+   }
+
+   public class Test 
+   { 
+       public string Text;
+   }
+}</value>
+  </data>
+  <data name="Samples_Sample2" xml:space="preserve">
+    <value>using System;
+
+namespace Samples
+{
+   public class Echoer
+   {
+      public string Write(string message)
+      {
+         Container&lt;string&gt; c = new Container&lt;string&gt;();
+         c.Data = message;
+         return Helper(c);
+      }
+      
+      private string Helper&lt;T&gt;(Container&lt;T&gt; obj)
+      {
+         return "(" + obj.Data.ToString() + ")";
+      }
+   }
+   
+   public class Container&lt;T&gt;
+   {
+       public T Data;
+   }
+}</value>
+  </data>
+  <data name="Samples_Sample3" xml:space="preserve">
+    <value>using System;
+using System.Threading;
+using System.Collections.Generic;
+
+namespace Samples
+{
+   public class Echoer
+   {
+      // Suggested input to visualize GC is 4000
+      public string Write(string input)
+      {
+         int size = int.Parse(input);
+         List&lt;BigData&gt; bigList = new List&lt;BigData&gt;();
+         for (int i = 0; i &lt; size; ++i)
+         {
+            var elem = new BigData();
+            elem.Array[0] = 1;
+            bigList.Add(elem);
+            Thread.Sleep(10);
+         }
+         return bigList.Count.ToString();
+      }
+   }
+   
+   public class BigData
+   {
+      public int[] Array = new int[3000];
+   }
+}</value>
+  </data>
+  <data name="SyntaxHighlightingIL" xml:space="preserve">
+    <value>&lt;SyntaxDefinition name="IL" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008"&gt;
+    &lt;Color name="Comment" foreground="Green" /&gt;
+    &lt;Color name="String" foreground="Blue" /&gt;
+    
+    &lt;!-- This is the main ruleset. --&gt;
+    &lt;RuleSet&gt;
+        &lt;Span color="Comment" begin=";" /&gt;
+        &lt;Span color="String"&gt;
+            &lt;Begin&gt;"&lt;/Begin&gt;
+            &lt;End&gt;"&lt;/End&gt;
+            &lt;RuleSet&gt;
+                &lt;!-- nested span for escape sequences --&gt;
+                &lt;Span begin="\\" end="." /&gt;
+            &lt;/RuleSet&gt;
+        &lt;/Span&gt;
+        
+        &lt;Keywords fontWeight="bold" foreground="Blue"&gt;
+            &lt;Word&gt;aaa&lt;/Word&gt;
+            &lt;Word&gt;aad&lt;/Word&gt;
+            &lt;Word&gt;aam&lt;/Word&gt;
+            &lt;Word&gt;aas&lt;/Word&gt;
+            &lt;Word&gt;adc&lt;/Word&gt;
+            &lt;Word&gt;adcx&lt;/Word&gt;
+            &lt;Word&gt;add&lt;/Word&gt;
+            &lt;Word&gt;addpd&lt;/Word&gt;
+            &lt;Word&gt;addps&lt;/Word&gt;
+            &lt;Word&gt;addsd&lt;/Word&gt;
+            &lt;Word&gt;addss&lt;/Word&gt;
+            &lt;Word&gt;addsubpd&lt;/Word&gt;
+            &lt;Word&gt;addsubps&lt;/Word&gt;
+            &lt;Word&gt;adox&lt;/Word&gt;
+            &lt;Word&gt;aesdec&lt;/Word&gt;
+            &lt;Word&gt;aesdeclast&lt;/Word&gt;
+            &lt;Word&gt;aesenc&lt;/Word&gt;
+            &lt;Word&gt;aesenclast&lt;/Word&gt;
+            &lt;Word&gt;aesimc&lt;/Word&gt;
+            &lt;Word&gt;aeskeygenassist&lt;/Word&gt;
+            &lt;Word&gt;and&lt;/Word&gt;
+            &lt;Word&gt;andn&lt;/Word&gt;
+            &lt;Word&gt;andnpd&lt;/Word&gt;
+            &lt;Word&gt;andnps&lt;/Word&gt;
+            &lt;Word&gt;andpd&lt;/Word&gt;
+            &lt;Word&gt;andps&lt;/Word&gt;
+            &lt;Word&gt;arpl&lt;/Word&gt;
+            &lt;Word&gt;bextr&lt;/Word&gt;
+            &lt;Word&gt;blendpd&lt;/Word&gt;
+            &lt;Word&gt;blendps&lt;/Word&gt;
+            &lt;Word&gt;blendvpd&lt;/Word&gt;
+            &lt;Word&gt;blendvps&lt;/Word&gt;
+            &lt;Word&gt;blsi&lt;/Word&gt;
+            &lt;Word&gt;blsmsk&lt;/Word&gt;
+            &lt;Word&gt;blsr&lt;/Word&gt;
+            &lt;Word&gt;bound&lt;/Word&gt;
+            &lt;Word&gt;bsf&lt;/Word&gt;
+            &lt;Word&gt;bsr&lt;/Word&gt;
+            &lt;Word&gt;bswap&lt;/Word&gt;
+            &lt;Word&gt;bt&lt;/Word&gt;
+            &lt;Word&gt;btc&lt;/Word&gt;
+            &lt;Word&gt;btr&lt;/Word&gt;
+            &lt;Word&gt;bts&lt;/Word&gt;
+            &lt;Word&gt;bzhi&lt;/Word&gt;
+            &lt;Word&gt;call&lt;/Word&gt;
+            &lt;Word&gt;cbw&lt;/Word&gt;
+            &lt;Word&gt;cdq&lt;/Word&gt;
+            &lt;Word&gt;cdqe&lt;/Word&gt;
+            &lt;Word&gt;clac&lt;/Word&gt;
+            &lt;Word&gt;clc&lt;/Word&gt;
+            &lt;Word&gt;cld&lt;/Word&gt;
+            &lt;Word&gt;clflush&lt;/Word&gt;
+            &lt;Word&gt;cli&lt;/Word&gt;
+            &lt;Word&gt;clts&lt;/Word&gt;
+            &lt;Word&gt;cmc&lt;/Word&gt;
+            &lt;Word&gt;cmp&lt;/Word&gt;
+            &lt;Word&gt;cmppd&lt;/Word&gt;
+            &lt;Word&gt;cmpps&lt;/Word&gt;
+            &lt;Word&gt;cmps&lt;/Word&gt;
+            &lt;Word&gt;cmpsb&lt;/Word&gt;
+            &lt;Word&gt;cmpsd&lt;/Word&gt;
+            &lt;Word&gt;cmpsd&lt;/Word&gt;
+            &lt;Word&gt;cmpsq&lt;/Word&gt;
+            &lt;Word&gt;cmpss&lt;/Word&gt;
+            &lt;Word&gt;cmpsw&lt;/Word&gt;
+            &lt;Word&gt;cmpxchg&lt;/Word&gt;
+            &lt;Word&gt;cmpxchg16b&lt;/Word&gt;
+            &lt;Word&gt;cmpxchg8b&lt;/Word&gt;
+            &lt;Word&gt;comisd&lt;/Word&gt;
+            &lt;Word&gt;comiss&lt;/Word&gt;
+            &lt;Word&gt;cpuid&lt;/Word&gt;
+            &lt;Word&gt;cqo&lt;/Word&gt;
+            &lt;Word&gt;crc32&lt;/Word&gt;
+            &lt;Word&gt;cvtdq2pd&lt;/Word&gt;
+            &lt;Word&gt;cvtdq2ps&lt;/Word&gt;
+            &lt;Word&gt;cvtpd2dq&lt;/Word&gt;
+            &lt;Word&gt;cvtpd2pi&lt;/Word&gt;
+            &lt;Word&gt;cvtpd2ps&lt;/Word&gt;
+            &lt;Word&gt;cvtpi2pd&lt;/Word&gt;
+            &lt;Word&gt;cvtpi2ps&lt;/Word&gt;
+            &lt;Word&gt;cvtps2dq&lt;/Word&gt;
+            &lt;Word&gt;cvtps2pd&lt;/Word&gt;
+            &lt;Word&gt;cvtps2pi&lt;/Word&gt;
+            &lt;Word&gt;cvtsd2si&lt;/Word&gt;
+            &lt;Word&gt;cvtsd2ss&lt;/Word&gt;
+            &lt;Word&gt;cvtsi2sd&lt;/Word&gt;
+            &lt;Word&gt;cvtsi2ss&lt;/Word&gt;
+            &lt;Word&gt;cvtss2sd&lt;/Word&gt;
+            &lt;Word&gt;cvtss2si&lt;/Word&gt;
+            &lt;Word&gt;cvttpd2dq&lt;/Word&gt;
+            &lt;Word&gt;cvttpd2pi&lt;/Word&gt;
+            &lt;Word&gt;cvttps2dq&lt;/Word&gt;
+            &lt;Word&gt;cvttps2pi&lt;/Word&gt;
+            &lt;Word&gt;cvttsd2si&lt;/Word&gt;
+            &lt;Word&gt;cvttss2si&lt;/Word&gt;
+            &lt;Word&gt;cwd&lt;/Word&gt;
+            &lt;Word&gt;cwde&lt;/Word&gt;
+            &lt;Word&gt;daa&lt;/Word&gt;
+            &lt;Word&gt;das&lt;/Word&gt;
+            &lt;Word&gt;dec&lt;/Word&gt;
+            &lt;Word&gt;div&lt;/Word&gt;
+            &lt;Word&gt;divpd&lt;/Word&gt;
+            &lt;Word&gt;divps&lt;/Word&gt;
+            &lt;Word&gt;divsd&lt;/Word&gt;
+            &lt;Word&gt;divss&lt;/Word&gt;
+            &lt;Word&gt;dppd&lt;/Word&gt;
+            &lt;Word&gt;dpps&lt;/Word&gt;
+            &lt;Word&gt;emms&lt;/Word&gt;
+            &lt;Word&gt;enter&lt;/Word&gt;
+            &lt;Word&gt;extractps&lt;/Word&gt;
+            &lt;Word&gt;f2xm1&lt;/Word&gt;
+            &lt;Word&gt;fabs&lt;/Word&gt;
+            &lt;Word&gt;fadd&lt;/Word&gt;
+            &lt;Word&gt;faddp&lt;/Word&gt;
+            &lt;Word&gt;fbld&lt;/Word&gt;
+            &lt;Word&gt;fbstp&lt;/Word&gt;
+            &lt;Word&gt;fchs&lt;/Word&gt;
+            &lt;Word&gt;fclex&lt;/Word&gt;
+            &lt;Word&gt;fcom&lt;/Word&gt;
+            &lt;Word&gt;fcomi&lt;/Word&gt;
+            &lt;Word&gt;fcomip&lt;/Word&gt;
+            &lt;Word&gt;fcomp&lt;/Word&gt;
+            &lt;Word&gt;fcompp&lt;/Word&gt;
+            &lt;Word&gt;fcos&lt;/Word&gt;
+            &lt;Word&gt;fdecstp&lt;/Word&gt;
+            &lt;Word&gt;fdiv&lt;/Word&gt;
+            &lt;Word&gt;fdivp&lt;/Word&gt;
+            &lt;Word&gt;fdivr&lt;/Word&gt;
+            &lt;Word&gt;fdivrp&lt;/Word&gt;
+            &lt;Word&gt;ffree&lt;/Word&gt;
+            &lt;Word&gt;fiadd&lt;/Word&gt;
+            &lt;Word&gt;ficom&lt;/Word&gt;
+            &lt;Word&gt;ficomp&lt;/Word&gt;
+            &lt;Word&gt;fidiv&lt;/Word&gt;
+            &lt;Word&gt;fidivr&lt;/Word&gt;
+            &lt;Word&gt;fild&lt;/Word&gt;
+            &lt;Word&gt;fimul&lt;/Word&gt;
+            &lt;Word&gt;fincstp&lt;/Word&gt;
+            &lt;Word&gt;finit&lt;/Word&gt;
+            &lt;Word&gt;fist&lt;/Word&gt;
+            &lt;Word&gt;fistp&lt;/Word&gt;
+            &lt;Word&gt;fisttp&lt;/Word&gt;
+            &lt;Word&gt;fisub&lt;/Word&gt;
+            &lt;Word&gt;fisubr&lt;/Word&gt;
+            &lt;Word&gt;fld&lt;/Word&gt;
+            &lt;Word&gt;fld1&lt;/Word&gt;
+            &lt;Word&gt;fldcw&lt;/Word&gt;
+            &lt;Word&gt;fldenv&lt;/Word&gt;
+            &lt;Word&gt;fldl2e&lt;/Word&gt;
+            &lt;Word&gt;fldl2t&lt;/Word&gt;
+            &lt;Word&gt;fldlg2&lt;/Word&gt;
+            &lt;Word&gt;fldln2&lt;/Word&gt;
+            &lt;Word&gt;fldpi&lt;/Word&gt;
+            &lt;Word&gt;fldz&lt;/Word&gt;
+            &lt;Word&gt;fmul&lt;/Word&gt;
+            &lt;Word&gt;fmulp&lt;/Word&gt;
+            &lt;Word&gt;fnclex&lt;/Word&gt;
+            &lt;Word&gt;fninit&lt;/Word&gt;
+            &lt;Word&gt;fnop&lt;/Word&gt;
+            &lt;Word&gt;fnsave&lt;/Word&gt;
+            &lt;Word&gt;fnstcw&lt;/Word&gt;
+            &lt;Word&gt;fnstenv&lt;/Word&gt;
+            &lt;Word&gt;fnstsw&lt;/Word&gt;
+            &lt;Word&gt;fpatan&lt;/Word&gt;
+            &lt;Word&gt;fprem&lt;/Word&gt;
+            &lt;Word&gt;fprem1&lt;/Word&gt;
+            &lt;Word&gt;fptan&lt;/Word&gt;
+            &lt;Word&gt;frndint&lt;/Word&gt;
+            &lt;Word&gt;frstor&lt;/Word&gt;
+            &lt;Word&gt;fsave&lt;/Word&gt;
+            &lt;Word&gt;fscale&lt;/Word&gt;
+            &lt;Word&gt;fsin&lt;/Word&gt;
+            &lt;Word&gt;fsincos&lt;/Word&gt;
+            &lt;Word&gt;fsqrt&lt;/Word&gt;
+            &lt;Word&gt;fst&lt;/Word&gt;
+            &lt;Word&gt;fstcw&lt;/Word&gt;
+            &lt;Word&gt;fstenv&lt;/Word&gt;
+            &lt;Word&gt;fstp&lt;/Word&gt;
+            &lt;Word&gt;fstsw&lt;/Word&gt;
+            &lt;Word&gt;fsub&lt;/Word&gt;
+            &lt;Word&gt;fsubp&lt;/Word&gt;
+            &lt;Word&gt;fsubr&lt;/Word&gt;
+            &lt;Word&gt;fsubrp&lt;/Word&gt;
+            &lt;Word&gt;ftst&lt;/Word&gt;
+            &lt;Word&gt;fucom&lt;/Word&gt;
+            &lt;Word&gt;fucomi&lt;/Word&gt;
+            &lt;Word&gt;fucomip&lt;/Word&gt;
+            &lt;Word&gt;fucomp&lt;/Word&gt;
+            &lt;Word&gt;fucompp&lt;/Word&gt;
+            &lt;Word&gt;fwait&lt;/Word&gt;
+            &lt;Word&gt;fxam&lt;/Word&gt;
+            &lt;Word&gt;fxch&lt;/Word&gt;
+            &lt;Word&gt;fxrstor&lt;/Word&gt;
+            &lt;Word&gt;fxsave&lt;/Word&gt;
+            &lt;Word&gt;fxtract&lt;/Word&gt;
+            &lt;Word&gt;fyl2x&lt;/Word&gt;
+            &lt;Word&gt;fyl2xp1&lt;/Word&gt;
+            &lt;Word&gt;haddpd&lt;/Word&gt;
+            &lt;Word&gt;haddps&lt;/Word&gt;
+            &lt;Word&gt;hlt&lt;/Word&gt;
+            &lt;Word&gt;hsubpd&lt;/Word&gt;
+            &lt;Word&gt;hsubps&lt;/Word&gt;
+            &lt;Word&gt;idiv&lt;/Word&gt;
+            &lt;Word&gt;imul&lt;/Word&gt;
+            &lt;Word&gt;in&lt;/Word&gt;
+            &lt;Word&gt;inc&lt;/Word&gt;
+            &lt;Word&gt;ins&lt;/Word&gt;
+            &lt;Word&gt;insb&lt;/Word&gt;
+            &lt;Word&gt;insd&lt;/Word&gt;
+            &lt;Word&gt;insertps&lt;/Word&gt;
+            &lt;Word&gt;insw&lt;/Word&gt;
+            &lt;Word&gt;int&lt;/Word&gt;
+            &lt;Word&gt;int&lt;/Word&gt;
+            &lt;Word&gt;into&lt;/Word&gt;
+            &lt;Word&gt;invd&lt;/Word&gt;
+            &lt;Word&gt;invlpg&lt;/Word&gt;
+            &lt;Word&gt;invpcid&lt;/Word&gt;
+            &lt;Word&gt;iret&lt;/Word&gt;
+            &lt;Word&gt;iretd&lt;/Word&gt;
+            &lt;Word&gt;jmp&lt;/Word&gt;
+            &lt;Word&gt;jcc&lt;/Word&gt;
+            &lt;Word&gt;jz&lt;/Word&gt;
+            &lt;Word&gt;lahf&lt;/Word&gt;
+            &lt;Word&gt;lar&lt;/Word&gt;
+            &lt;Word&gt;lddqu&lt;/Word&gt;
+            &lt;Word&gt;ldmxcsr&lt;/Word&gt;
+            &lt;Word&gt;lds&lt;/Word&gt;
+            &lt;Word&gt;lea&lt;/Word&gt;
+            &lt;Word&gt;leave&lt;/Word&gt;
+            &lt;Word&gt;les&lt;/Word&gt;
+            &lt;Word&gt;lfence&lt;/Word&gt;
+            &lt;Word&gt;lfs&lt;/Word&gt;
+            &lt;Word&gt;lgdt&lt;/Word&gt;
+            &lt;Word&gt;lgs&lt;/Word&gt;
+            &lt;Word&gt;lidt&lt;/Word&gt;
+            &lt;Word&gt;lldt&lt;/Word&gt;
+            &lt;Word&gt;lmsw&lt;/Word&gt;
+            &lt;Word&gt;lock&lt;/Word&gt;
+            &lt;Word&gt;lods&lt;/Word&gt;
+            &lt;Word&gt;lodsb&lt;/Word&gt;
+            &lt;Word&gt;lodsd&lt;/Word&gt;
+            &lt;Word&gt;lodsq&lt;/Word&gt;
+            &lt;Word&gt;lodsw&lt;/Word&gt;
+            &lt;Word&gt;loop&lt;/Word&gt;
+            &lt;Word&gt;loopcc&lt;/Word&gt;
+            &lt;Word&gt;lsl&lt;/Word&gt;
+            &lt;Word&gt;lss&lt;/Word&gt;
+            &lt;Word&gt;ltr&lt;/Word&gt;
+            &lt;Word&gt;lzcnt&lt;/Word&gt;
+            &lt;Word&gt;maskmovdqu&lt;/Word&gt;
+            &lt;Word&gt;maskmovq&lt;/Word&gt;
+            &lt;Word&gt;maxpd&lt;/Word&gt;
+            &lt;Word&gt;maxps&lt;/Word&gt;
+            &lt;Word&gt;maxsd&lt;/Word&gt;
+            &lt;Word&gt;maxss&lt;/Word&gt;
+            &lt;Word&gt;mfence&lt;/Word&gt;
+            &lt;Word&gt;minpd&lt;/Word&gt;
+            &lt;Word&gt;minps&lt;/Word&gt;
+            &lt;Word&gt;minsd&lt;/Word&gt;
+            &lt;Word&gt;minss&lt;/Word&gt;
+            &lt;Word&gt;monitor&lt;/Word&gt;
+            &lt;Word&gt;mov&lt;/Word&gt;
+            &lt;Word&gt;mov&lt;/Word&gt;
+            &lt;Word&gt;mov&lt;/Word&gt;
+            &lt;Word&gt;movapd&lt;/Word&gt;
+            &lt;Word&gt;movaps&lt;/Word&gt;
+            &lt;Word&gt;movbe&lt;/Word&gt;
+            &lt;Word&gt;movd&lt;/Word&gt;
+            &lt;Word&gt;movddup&lt;/Word&gt;
+            &lt;Word&gt;movdq2q&lt;/Word&gt;
+            &lt;Word&gt;movdqa&lt;/Word&gt;
+            &lt;Word&gt;movdqu&lt;/Word&gt;
+            &lt;Word&gt;movhlps&lt;/Word&gt;
+            &lt;Word&gt;movhpd&lt;/Word&gt;
+            &lt;Word&gt;movhps&lt;/Word&gt;
+            &lt;Word&gt;movlhps&lt;/Word&gt;
+            &lt;Word&gt;movlpd&lt;/Word&gt;
+            &lt;Word&gt;movlps&lt;/Word&gt;
+            &lt;Word&gt;movmskpd&lt;/Word&gt;
+            &lt;Word&gt;movmskps&lt;/Word&gt;
+            &lt;Word&gt;movntdq&lt;/Word&gt;
+            &lt;Word&gt;movntdqa&lt;/Word&gt;
+            &lt;Word&gt;movnti&lt;/Word&gt;
+            &lt;Word&gt;movntpd&lt;/Word&gt;
+            &lt;Word&gt;movntps&lt;/Word&gt;
+            &lt;Word&gt;movntq&lt;/Word&gt;
+            &lt;Word&gt;movq&lt;/Word&gt;
+            &lt;Word&gt;movq&lt;/Word&gt;
+            &lt;Word&gt;movq2dq&lt;/Word&gt;
+            &lt;Word&gt;movs&lt;/Word&gt;
+            &lt;Word&gt;movsb&lt;/Word&gt;
+            &lt;Word&gt;movsd&lt;/Word&gt;
+            &lt;Word&gt;movsd&lt;/Word&gt;
+            &lt;Word&gt;movshdup&lt;/Word&gt;
+            &lt;Word&gt;movsldup&lt;/Word&gt;
+            &lt;Word&gt;movsq&lt;/Word&gt;
+            &lt;Word&gt;movss&lt;/Word&gt;
+            &lt;Word&gt;movsw&lt;/Word&gt;
+            &lt;Word&gt;movsx&lt;/Word&gt;
+            &lt;Word&gt;movsxd&lt;/Word&gt;
+            &lt;Word&gt;movupd&lt;/Word&gt;
+            &lt;Word&gt;movups&lt;/Word&gt;
+            &lt;Word&gt;movzx&lt;/Word&gt;
+            &lt;Word&gt;mpsadbw&lt;/Word&gt;
+            &lt;Word&gt;mul&lt;/Word&gt;
+            &lt;Word&gt;mulpd&lt;/Word&gt;
+            &lt;Word&gt;mulps&lt;/Word&gt;
+            &lt;Word&gt;mulsd&lt;/Word&gt;
+            &lt;Word&gt;mulss&lt;/Word&gt;
+            &lt;Word&gt;mwait&lt;/Word&gt;
+            &lt;Word&gt;mulx&lt;/Word&gt;
+            &lt;Word&gt;mwait&lt;/Word&gt;
+            &lt;Word&gt;neg&lt;/Word&gt;
+            &lt;Word&gt;nop&lt;/Word&gt;
+            &lt;Word&gt;not&lt;/Word&gt;
+            &lt;Word&gt;or&lt;/Word&gt;
+            &lt;Word&gt;orpd&lt;/Word&gt;
+            &lt;Word&gt;orps&lt;/Word&gt;
+            &lt;Word&gt;out&lt;/Word&gt;
+            &lt;Word&gt;outs&lt;/Word&gt;
+            &lt;Word&gt;outsb&lt;/Word&gt;
+            &lt;Word&gt;outsd&lt;/Word&gt;
+            &lt;Word&gt;outsw&lt;/Word&gt;
+            &lt;Word&gt;pabsb&lt;/Word&gt;
+            &lt;Word&gt;pabsd&lt;/Word&gt;
+            &lt;Word&gt;pabsw&lt;/Word&gt;
+            &lt;Word&gt;packssdw&lt;/Word&gt;
+            &lt;Word&gt;packsswb&lt;/Word&gt;
+            &lt;Word&gt;packusdw&lt;/Word&gt;
+            &lt;Word&gt;packuswb&lt;/Word&gt;
+            &lt;Word&gt;paddb&lt;/Word&gt;
+            &lt;Word&gt;paddd&lt;/Word&gt;
+            &lt;Word&gt;paddq&lt;/Word&gt;
+            &lt;Word&gt;paddsb&lt;/Word&gt;
+            &lt;Word&gt;paddsw&lt;/Word&gt;
+            &lt;Word&gt;paddusb&lt;/Word&gt;
+            &lt;Word&gt;paddusw&lt;/Word&gt;
+            &lt;Word&gt;paddw&lt;/Word&gt;
+            &lt;Word&gt;palignr&lt;/Word&gt;
+            &lt;Word&gt;pand&lt;/Word&gt;
+            &lt;Word&gt;pandn&lt;/Word&gt;
+            &lt;Word&gt;pause&lt;/Word&gt;
+            &lt;Word&gt;pavgb&lt;/Word&gt;
+            &lt;Word&gt;pavgw&lt;/Word&gt;
+            &lt;Word&gt;pblendvb&lt;/Word&gt;
+            &lt;Word&gt;pblendw&lt;/Word&gt;
+            &lt;Word&gt;pclmulqdq&lt;/Word&gt;
+            &lt;Word&gt;pcmpeqb&lt;/Word&gt;
+            &lt;Word&gt;pcmpeqd&lt;/Word&gt;
+            &lt;Word&gt;pcmpeqq&lt;/Word&gt;
+            &lt;Word&gt;pcmpeqw&lt;/Word&gt;
+            &lt;Word&gt;pcmpestri&lt;/Word&gt;
+            &lt;Word&gt;pcmpestrm&lt;/Word&gt;
+            &lt;Word&gt;pcmpgtb&lt;/Word&gt;
+            &lt;Word&gt;pcmpgtd&lt;/Word&gt;
+            &lt;Word&gt;pcmpgtq&lt;/Word&gt;
+            &lt;Word&gt;pcmpgtw&lt;/Word&gt;
+            &lt;Word&gt;pcmpistri&lt;/Word&gt;
+            &lt;Word&gt;pcmpistrm&lt;/Word&gt;
+            &lt;Word&gt;pdep&lt;/Word&gt;
+            &lt;Word&gt;pext&lt;/Word&gt;
+            &lt;Word&gt;pextrb&lt;/Word&gt;
+            &lt;Word&gt;pextrd&lt;/Word&gt;
+            &lt;Word&gt;pextrq&lt;/Word&gt;
+            &lt;Word&gt;pextrw&lt;/Word&gt;
+            &lt;Word&gt;phaddd&lt;/Word&gt;
+            &lt;Word&gt;phaddsw&lt;/Word&gt;
+            &lt;Word&gt;phaddw&lt;/Word&gt;
+            &lt;Word&gt;phminposuw&lt;/Word&gt;
+            &lt;Word&gt;phsubd&lt;/Word&gt;
+            &lt;Word&gt;phsubsw&lt;/Word&gt;
+            &lt;Word&gt;phsubw&lt;/Word&gt;
+            &lt;Word&gt;pinsrb&lt;/Word&gt;
+            &lt;Word&gt;pinsrd&lt;/Word&gt;
+            &lt;Word&gt;pinsrq&lt;/Word&gt;
+            &lt;Word&gt;pinsrw&lt;/Word&gt;
+            &lt;Word&gt;pmaddubsw&lt;/Word&gt;
+            &lt;Word&gt;pmaddwd&lt;/Word&gt;
+            &lt;Word&gt;pmaxsb&lt;/Word&gt;
+            &lt;Word&gt;pmaxsd&lt;/Word&gt;
+            &lt;Word&gt;pmaxsw&lt;/Word&gt;
+            &lt;Word&gt;pmaxub&lt;/Word&gt;
+            &lt;Word&gt;pmaxud&lt;/Word&gt;
+            &lt;Word&gt;pmaxuw&lt;/Word&gt;
+            &lt;Word&gt;pminsb&lt;/Word&gt;
+            &lt;Word&gt;pminsd&lt;/Word&gt;
+            &lt;Word&gt;pminsw&lt;/Word&gt;
+            &lt;Word&gt;pminub&lt;/Word&gt;
+            &lt;Word&gt;pminud&lt;/Word&gt;
+            &lt;Word&gt;pminuw&lt;/Word&gt;
+            &lt;Word&gt;pmovmskb&lt;/Word&gt;
+            &lt;Word&gt;pmovsx&lt;/Word&gt;
+            &lt;Word&gt;pmovzx&lt;/Word&gt;
+            &lt;Word&gt;pmuldq&lt;/Word&gt;
+            &lt;Word&gt;pmulhrsw&lt;/Word&gt;
+            &lt;Word&gt;pmulhuw&lt;/Word&gt;
+            &lt;Word&gt;pmulhw&lt;/Word&gt;
+            &lt;Word&gt;pmulld&lt;/Word&gt;
+            &lt;Word&gt;pmullw&lt;/Word&gt;
+            &lt;Word&gt;pmuludq&lt;/Word&gt;
+            &lt;Word&gt;pop&lt;/Word&gt;
+            &lt;Word&gt;popa&lt;/Word&gt;
+            &lt;Word&gt;popad&lt;/Word&gt;
+            &lt;Word&gt;popcnt&lt;/Word&gt;
+            &lt;Word&gt;popf&lt;/Word&gt;
+            &lt;Word&gt;popfd&lt;/Word&gt;
+            &lt;Word&gt;popfq&lt;/Word&gt;
+            &lt;Word&gt;por&lt;/Word&gt;
+            &lt;Word&gt;prefetchw&lt;/Word&gt;
+            &lt;Word&gt;prefetchwt1&lt;/Word&gt;
+            &lt;Word&gt;psadbw&lt;/Word&gt;
+            &lt;Word&gt;pshufb&lt;/Word&gt;
+            &lt;Word&gt;pshufd&lt;/Word&gt;
+            &lt;Word&gt;pshufhw&lt;/Word&gt;
+            &lt;Word&gt;pshuflw&lt;/Word&gt;
+            &lt;Word&gt;pshufw&lt;/Word&gt;
+            &lt;Word&gt;psignb&lt;/Word&gt;
+            &lt;Word&gt;psignd&lt;/Word&gt;
+            &lt;Word&gt;psignw&lt;/Word&gt;
+            &lt;Word&gt;pslld&lt;/Word&gt;
+            &lt;Word&gt;pslldq&lt;/Word&gt;
+            &lt;Word&gt;psllq&lt;/Word&gt;
+            &lt;Word&gt;psllw&lt;/Word&gt;
+            &lt;Word&gt;psrad&lt;/Word&gt;
+            &lt;Word&gt;psraw&lt;/Word&gt;
+            &lt;Word&gt;psrld&lt;/Word&gt;
+            &lt;Word&gt;psrldq&lt;/Word&gt;
+            &lt;Word&gt;psrlq&lt;/Word&gt;
+            &lt;Word&gt;psrlw&lt;/Word&gt;
+            &lt;Word&gt;psubb&lt;/Word&gt;
+            &lt;Word&gt;psubd&lt;/Word&gt;
+            &lt;Word&gt;psubq&lt;/Word&gt;
+            &lt;Word&gt;psubsb&lt;/Word&gt;
+            &lt;Word&gt;psubsw&lt;/Word&gt;
+            &lt;Word&gt;psubusb&lt;/Word&gt;
+            &lt;Word&gt;psubusw&lt;/Word&gt;
+            &lt;Word&gt;psubw&lt;/Word&gt;
+            &lt;Word&gt;ptest&lt;/Word&gt;
+            &lt;Word&gt;punpckhbw&lt;/Word&gt;
+            &lt;Word&gt;punpckhdq&lt;/Word&gt;
+            &lt;Word&gt;punpckhqdq&lt;/Word&gt;
+            &lt;Word&gt;punpckhwd&lt;/Word&gt;
+            &lt;Word&gt;punpcklbw&lt;/Word&gt;
+            &lt;Word&gt;punpckldq&lt;/Word&gt;
+            &lt;Word&gt;punpcklqdq&lt;/Word&gt;
+            &lt;Word&gt;punpcklwd&lt;/Word&gt;
+            &lt;Word&gt;push&lt;/Word&gt;
+            &lt;Word&gt;pusha&lt;/Word&gt;
+            &lt;Word&gt;pushad&lt;/Word&gt;
+            &lt;Word&gt;pushf&lt;/Word&gt;
+            &lt;Word&gt;pushfd&lt;/Word&gt;
+            &lt;Word&gt;pxor&lt;/Word&gt;
+            &lt;Word&gt;rcl&lt;/Word&gt;
+            &lt;Word&gt;rcpps&lt;/Word&gt;
+            &lt;Word&gt;rcpss&lt;/Word&gt;
+            &lt;Word&gt;rcr&lt;/Word&gt;
+            &lt;Word&gt;rdfsbase&lt;/Word&gt;
+            &lt;Word&gt;rdgsbase&lt;/Word&gt;
+            &lt;Word&gt;rdmsr&lt;/Word&gt;
+            &lt;Word&gt;rdpmc&lt;/Word&gt;
+            &lt;Word&gt;rdrand&lt;/Word&gt;
+            &lt;Word&gt;rdseed&lt;/Word&gt;
+            &lt;Word&gt;rdtsc&lt;/Word&gt;
+            &lt;Word&gt;rdtscp&lt;/Word&gt;
+            &lt;Word&gt;rep&lt;/Word&gt;
+            &lt;Word&gt;repe&lt;/Word&gt;
+            &lt;Word&gt;repne&lt;/Word&gt;
+            &lt;Word&gt;repnz&lt;/Word&gt;
+            &lt;Word&gt;repz&lt;/Word&gt;
+            &lt;Word&gt;ret&lt;/Word&gt;
+            &lt;Word&gt;rol&lt;/Word&gt;
+            &lt;Word&gt;ror&lt;/Word&gt;
+            &lt;Word&gt;rorx&lt;/Word&gt;
+            &lt;Word&gt;roundpd&lt;/Word&gt;
+            &lt;Word&gt;roundps&lt;/Word&gt;
+            &lt;Word&gt;roundsd&lt;/Word&gt;
+            &lt;Word&gt;roundss&lt;/Word&gt;
+            &lt;Word&gt;rsm&lt;/Word&gt;
+            &lt;Word&gt;rsqrtps&lt;/Word&gt;
+            &lt;Word&gt;rsqrtss&lt;/Word&gt;
+            &lt;Word&gt;sahf&lt;/Word&gt;
+            &lt;Word&gt;sal&lt;/Word&gt;
+            &lt;Word&gt;sar&lt;/Word&gt;
+            &lt;Word&gt;sarx&lt;/Word&gt;
+            &lt;Word&gt;sbb&lt;/Word&gt;
+            &lt;Word&gt;scas&lt;/Word&gt;
+            &lt;Word&gt;scasb&lt;/Word&gt;
+            &lt;Word&gt;scasd&lt;/Word&gt;
+            &lt;Word&gt;scasw&lt;/Word&gt;
+            &lt;Word&gt;setcc&lt;/Word&gt;
+            &lt;Word&gt;sfence&lt;/Word&gt;
+            &lt;Word&gt;sgdt&lt;/Word&gt;
+            &lt;Word&gt;shl&lt;/Word&gt;
+            &lt;Word&gt;shld&lt;/Word&gt;
+            &lt;Word&gt;shlx&lt;/Word&gt;
+            &lt;Word&gt;shr&lt;/Word&gt;
+            &lt;Word&gt;shrd&lt;/Word&gt;
+            &lt;Word&gt;shrx&lt;/Word&gt;
+            &lt;Word&gt;shufpd&lt;/Word&gt;
+            &lt;Word&gt;shufps&lt;/Word&gt;
+            &lt;Word&gt;sidt&lt;/Word&gt;
+            &lt;Word&gt;sldt&lt;/Word&gt;
+            &lt;Word&gt;smsw&lt;/Word&gt;
+            &lt;Word&gt;sqrtpd&lt;/Word&gt;
+            &lt;Word&gt;sqrtps&lt;/Word&gt;
+            &lt;Word&gt;sqrtsd&lt;/Word&gt;
+            &lt;Word&gt;sqrtss&lt;/Word&gt;
+            &lt;Word&gt;stac&lt;/Word&gt;
+            &lt;Word&gt;stc&lt;/Word&gt;
+            &lt;Word&gt;std&lt;/Word&gt;
+            &lt;Word&gt;sti&lt;/Word&gt;
+            &lt;Word&gt;stmxcsr&lt;/Word&gt;
+            &lt;Word&gt;stos&lt;/Word&gt;
+            &lt;Word&gt;stosb&lt;/Word&gt;
+            &lt;Word&gt;stosd&lt;/Word&gt;
+            &lt;Word&gt;stosq&lt;/Word&gt;
+            &lt;Word&gt;stosw&lt;/Word&gt;
+            &lt;Word&gt;str&lt;/Word&gt;
+            &lt;Word&gt;sub&lt;/Word&gt;
+            &lt;Word&gt;subpd&lt;/Word&gt;
+            &lt;Word&gt;subps&lt;/Word&gt;
+            &lt;Word&gt;subsd&lt;/Word&gt;
+            &lt;Word&gt;subss&lt;/Word&gt;
+            &lt;Word&gt;swapgs&lt;/Word&gt;
+            &lt;Word&gt;syscall&lt;/Word&gt;
+            &lt;Word&gt;sysenter&lt;/Word&gt;
+            &lt;Word&gt;sysexit&lt;/Word&gt;
+            &lt;Word&gt;sysret&lt;/Word&gt;
+            &lt;Word&gt;test&lt;/Word&gt;
+            &lt;Word&gt;tzcnt&lt;/Word&gt;
+            &lt;Word&gt;ucomisd&lt;/Word&gt;
+            &lt;Word&gt;ucomiss&lt;/Word&gt;
+            &lt;Word&gt;ud2&lt;/Word&gt;
+            &lt;Word&gt;unpckhpd&lt;/Word&gt;
+            &lt;Word&gt;unpckhps&lt;/Word&gt;
+            &lt;Word&gt;unpcklpd&lt;/Word&gt;
+            &lt;Word&gt;unpcklps&lt;/Word&gt;
+            &lt;Word&gt;vbroadcast&lt;/Word&gt;
+            &lt;Word&gt;vcvtph2ps&lt;/Word&gt;
+            &lt;Word&gt;vcvtps2ph&lt;/Word&gt;
+            &lt;Word&gt;verr&lt;/Word&gt;
+            &lt;Word&gt;verw&lt;/Word&gt;
+            &lt;Word&gt;vextractf128&lt;/Word&gt;
+            &lt;Word&gt;vextracti128&lt;/Word&gt;
+            &lt;Word&gt;vfmadd132pd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd132ps&lt;/Word&gt;
+            &lt;Word&gt;vfmadd132sd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd132ss&lt;/Word&gt;
+            &lt;Word&gt;vfmadd213pd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd213ps&lt;/Word&gt;
+            &lt;Word&gt;vfmadd213sd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd213ss&lt;/Word&gt;
+            &lt;Word&gt;vfmadd231pd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd231ps&lt;/Word&gt;
+            &lt;Word&gt;vfmadd231sd&lt;/Word&gt;
+            &lt;Word&gt;vfmadd231ss&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub132pd&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub132ps&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub213pd&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub213ps&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub231pd&lt;/Word&gt;
+            &lt;Word&gt;vfmaddsub231ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsub132pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub132ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsub132sd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub132ss&lt;/Word&gt;
+            &lt;Word&gt;vfmsub213pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub213ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsub213sd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub213ss&lt;/Word&gt;
+            &lt;Word&gt;vfmsub231pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub231ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsub231sd&lt;/Word&gt;
+            &lt;Word&gt;vfmsub231ss&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd132pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd132ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd213pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd213ps&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd231pd&lt;/Word&gt;
+            &lt;Word&gt;vfmsubadd231ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd132pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd132ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd132sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd132ss&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd213pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd213ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd213sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd213ss&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd231pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd231ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd231sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmadd231ss&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub132pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub132ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub132sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub132ss&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub213pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub213ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub213sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub213ss&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub231pd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub231ps&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub231sd&lt;/Word&gt;
+            &lt;Word&gt;vfnmsub231ss&lt;/Word&gt;
+            &lt;Word&gt;vgatherdpd&lt;/Word&gt;
+            &lt;Word&gt;vgatherdps&lt;/Word&gt;
+            &lt;Word&gt;vgatherqpd&lt;/Word&gt;
+            &lt;Word&gt;vgatherqps&lt;/Word&gt;
+            &lt;Word&gt;vinsertf128&lt;/Word&gt;
+            &lt;Word&gt;vinserti128&lt;/Word&gt;
+            &lt;Word&gt;vmaskmov&lt;/Word&gt;
+            &lt;Word&gt;vpblendd&lt;/Word&gt;
+            &lt;Word&gt;vpbroadcast&lt;/Word&gt;
+            &lt;Word&gt;vperm2f128&lt;/Word&gt;
+            &lt;Word&gt;vperm2i128&lt;/Word&gt;
+            &lt;Word&gt;vpermd&lt;/Word&gt;
+            &lt;Word&gt;vpermilpd&lt;/Word&gt;
+            &lt;Word&gt;vpermilps&lt;/Word&gt;
+            &lt;Word&gt;vpermpd&lt;/Word&gt;
+            &lt;Word&gt;vpermps&lt;/Word&gt;
+            &lt;Word&gt;vpermq&lt;/Word&gt;
+            &lt;Word&gt;vpgatherdd&lt;/Word&gt;
+            &lt;Word&gt;vpgatherdq&lt;/Word&gt;
+            &lt;Word&gt;vpgatherqd&lt;/Word&gt;
+            &lt;Word&gt;vpgatherqq&lt;/Word&gt;
+            &lt;Word&gt;vpmaskmov&lt;/Word&gt;
+            &lt;Word&gt;vpsllvd&lt;/Word&gt;
+            &lt;Word&gt;vpsllvq&lt;/Word&gt;
+            &lt;Word&gt;vpsravd&lt;/Word&gt;
+            &lt;Word&gt;vpsrlvd&lt;/Word&gt;
+            &lt;Word&gt;vpsrlvq&lt;/Word&gt;
+            &lt;Word&gt;vtestpd&lt;/Word&gt;
+            &lt;Word&gt;vtestps&lt;/Word&gt;
+            &lt;Word&gt;vzeroall&lt;/Word&gt;
+            &lt;Word&gt;vzeroupper&lt;/Word&gt;
+            &lt;Word&gt;wait&lt;/Word&gt;
+            &lt;Word&gt;wbinvd&lt;/Word&gt;
+            &lt;Word&gt;wrfsbase&lt;/Word&gt;
+            &lt;Word&gt;wrgsbase&lt;/Word&gt;
+            &lt;Word&gt;wrmsr&lt;/Word&gt;
+            &lt;Word&gt;xabort&lt;/Word&gt;
+            &lt;Word&gt;xacquire&lt;/Word&gt;
+            &lt;Word&gt;xadd&lt;/Word&gt;
+            &lt;Word&gt;xbegin&lt;/Word&gt;
+            &lt;Word&gt;xchg&lt;/Word&gt;
+            &lt;Word&gt;xend&lt;/Word&gt;
+            &lt;Word&gt;xgetbv&lt;/Word&gt;
+            &lt;Word&gt;xlat&lt;/Word&gt;
+            &lt;Word&gt;xlatb&lt;/Word&gt;
+            &lt;Word&gt;xor&lt;/Word&gt;
+            &lt;Word&gt;xorpd&lt;/Word&gt;
+            &lt;Word&gt;xorps&lt;/Word&gt;
+            &lt;Word&gt;xrelease&lt;/Word&gt;
+            &lt;Word&gt;xrstor&lt;/Word&gt;
+            &lt;Word&gt;xrstors&lt;/Word&gt;
+            &lt;Word&gt;xsave&lt;/Word&gt;
+            &lt;Word&gt;xsavec&lt;/Word&gt;
+            &lt;Word&gt;xsaveopt&lt;/Word&gt;
+            &lt;Word&gt;xsaves&lt;/Word&gt;
+            &lt;Word&gt;xsetbv&lt;/Word&gt;
+            &lt;Word&gt;xtest&lt;/Word&gt;            
+			&lt;!-- ... --&gt;
+        &lt;/Keywords&gt;
+        
+        &lt;!-- Digits --&gt;
+        &lt;Rule foreground="DarkBlue"&gt;
+            \b0[xX][0-9a-fA-F]+  # hex number
+        |    \b
+            (    \d+(\.[0-9]+)?   #number with optional floating point
+            |    \.[0-9]+         #or just starting with floating point
+            )
+            ([eE][+-]?[0-9]+)? # optional exponent
+        &lt;/Rule&gt;
+    &lt;/RuleSet&gt;
+&lt;/SyntaxDefinition&gt;</value>
+  </data>
+</root>
