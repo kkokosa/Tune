@@ -1,7 +1,7 @@
 # Tune
 The Ultimate .NET Experiment
 
-![Example screenshot](\Tune.UI\Docs\Screenshot01.png)
+![Example screenshot](/Tune.UI/Docs/Screenshot01.png)
 
 ## Building
 
