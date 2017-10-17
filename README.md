@@ -1,7 +1,9 @@
 # Tune
 The Ultimate .NET Experiment
 
-##Building
+![Example screenshot](\Tune.UI\Docs\Screenshot01.png)
+
+## Building
 
 Requirements:
 * Visual Studio 2015
