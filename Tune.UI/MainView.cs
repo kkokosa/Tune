@@ -13,16 +13,8 @@ using DevExpress.XtraCharts;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.Disassembler;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.Diagnostics.Runtime;
 using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using Microsoft.Diagnostics.Tracing.Session;
-using Mono.Cecil;
-using SharpDisasm;
-using SharpDisasm.Translators;
 using Application = System.Windows.Forms.Application;
 using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -32,7 +24,6 @@ namespace Tune.UI
 {
     public partial class MainView : DevExpress.XtraEditors.XtraForm
     {
-        private NativeTarget nativeTarget;
         const int interval = 50;
         Random random = new Random();
         int TimeInterval = 10;
@@ -44,8 +35,8 @@ namespace Tune.UI
         private TextEditor teEditor;
         private TextEditor teIL;
         private TextEditor teASM;
-        private ClrRuntime runtime;
-        private ulong currentMethodAddress = 0;
+
+        private DiagnosticEngine engine;
 
         public MainView()
         {
@@ -55,8 +46,6 @@ namespace Tune.UI
 
             Version version = Assembly.GetEntryAssembly().GetName().Version;
             this.Text += $" {version.ToString()}";
-
-            this.nativeTarget = new NativeTarget(Process.GetCurrentProcess().Id);
 
             IHighlightingDefinition asmGiHighlightingDefinition;
             using (TextReader s = new StringReader(Resources.SyntaxHighlightingIL))
@@ -106,27 +95,11 @@ namespace Tune.UI
             var text = teASM.SelectedText;
             if (text.StartsWith("0x"))
             {
-                long address = Convert.ToInt64(text.Substring(2), 16);
-                using (DataTarget target =
-                    DataTarget.AttachToProcess(Process.GetCurrentProcess().Id, 5000, AttachFlag.Passive))
+                ulong address = Convert.ToUInt64(text.Substring(2), 16);
+                string symbol = engine.ResolveSymbol(address);
+                if (!string.IsNullOrWhiteSpace(symbol))
                 {
-                    foreach (ClrInfo version in target.ClrVersions)
-                    {
-                        ClrRuntime runtime = target.ClrVersions.Single().CreateRuntime();
-                        string methodSignature = runtime.GetMethodByAddress(unchecked((ulong) address))
-                            ?.GetFullSignature();
-                        if (!string.IsNullOrWhiteSpace(methodSignature))
-                        {
-                            teASM.Text = teASM.Text.Replace(text, methodSignature);
-                            return;
-                        }
-                    }
-                }
-
-                Symbol symbol = this.nativeTarget.ResolveSymbol((ulong)address);
-                if (!string.IsNullOrWhiteSpace(symbol.MethodName))
-                {
-                    teASM.Text = teASM.Text.Replace(text, symbol.ToString());
+                    teASM.Text = teASM.Text.Replace(text, symbol);
                 }
             }
         }
@@ -245,7 +218,6 @@ namespace Tune.UI
             var level = cbMode.SelectedItem.ToString() == "Release" ? DiagnosticAssemblyMode.Release : DiagnosticAssemblyMode.Debug;
             var platform = DiagnosticAssembyPlatform.x64;
 
-            var engine = new DiagnosticEngine();
             var assembly = engine.Compile(script, level, platform);
 
             string result = assembly.Execute(argument);
@@ -257,22 +229,6 @@ namespace Tune.UI
             UpdateASM(asmText);
             
             UpdateLog("Script processing ended.");
-        }
-
-        private string AsmSymbolResolver(Instruction instruction, long addr, ref long offset)
-        {
-            var operand = instruction.Operands.Length > 0 ? instruction.Operands[0] : null;
-            if (operand?.PtrOffset == 0)
-            {
-                var baseOffset = instruction.PC - currentMethodAddress;
-                return $"L{baseOffset + operand.PtrSegment:x4}";
-            }
-
-            string signature = runtime.GetMethodByAddress(unchecked((ulong)addr))?.GetFullSignature();
-            if (!string.IsNullOrWhiteSpace(signature))
-                return signature;
-            Symbol symbol = this.nativeTarget.ResolveSymbol((ulong)addr);
-            return symbol.ToString();
         }
 
         private void UpdateLog(string str, bool printTime = true)
@@ -321,68 +277,6 @@ namespace Tune.UI
         private void barStaticItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
 
-        }
-
-        private void DisassembleAndWrite(ClrMethod method, ArchitectureMode architecture, Translator translator, ref ulong methodAddressRef, TextWriter writer)
-        {
-            writer.WriteLine(method.GetFullSignature());
-            var info = FindNonEmptyHotColdInfo(method);
-            if (info == null)
-            {
-                writer.WriteLine("    ; Failed to find HotColdInfo");
-                return;
-            }
-            var methodAddress = info.HotStart;
-            methodAddressRef = methodAddress;
-            using (var disasm = new Disassembler(new IntPtr(unchecked((long)methodAddress)), (int)info.HotSize, architecture, methodAddress))
-            {
-                foreach (var instruction in disasm.Disassemble())
-                {
-                    writer.Write(String.Format("0x{0:X8}`{1:X8}:", (instruction.Offset >> 32) & 0xFFFFFFFF, instruction.Offset & 0xFFFFFFFF));
-                    writer.Write("    L");
-                    writer.Write((instruction.Offset - methodAddress).ToString("x4"));
-                    writer.Write(": ");
-                    writer.WriteLine(translator.Translate(instruction));
-                }
-            }
-        }
-
-        private HotColdRegions FindNonEmptyHotColdInfo(ClrMethod method)
-        {
-            // I can't really explain this, but it seems that some methods 
-            // are present multiple times in the same type -- one compiled
-            // and one not compiled. A bug in clrmd?
-            if (method.HotColdInfo.HotSize > 0)
-                return method.HotColdInfo;
-
-            if (method.Type == null)
-                return null;
-
-            var methodSignature = method.GetFullSignature();
-            foreach (var other in method.Type.Methods)
-            {
-                if (other.MetadataToken == method.MetadataToken && other.GetFullSignature() == methodSignature && other.HotColdInfo.HotSize > 0)
-                    return other.HotColdInfo;
-            }
-
-            return null;
-        }
-        private string ResolveSymbol(ClrRuntime runtime, Instruction instruction, long addr, ref ulong currentMethodAddress)
-        {
-            var operand = instruction.Operands.Length > 0 ? instruction.Operands[0] : null;
-            if (operand?.PtrOffset == 0)
-            {
-                var baseOffset = instruction.PC - currentMethodAddress;
-                return $"L{baseOffset + operand.PtrSegment:x4}";
-            }
-
-            string signature = runtime.GetMethodByAddress(unchecked((ulong)addr))?.GetFullSignature();
-            if (!string.IsNullOrWhiteSpace(signature))
-                return signature;
-            Symbol symbol = this.nativeTarget.ResolveSymbol((ulong)addr);
-            if (!string.IsNullOrWhiteSpace(symbol.MethodName))
-                return symbol.ToString();
-            return null;
         }
 
         private void btnExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
