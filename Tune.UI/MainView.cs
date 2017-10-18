@@ -221,17 +221,25 @@ namespace Tune.UI
             var level = cbMode.SelectedItem.ToString() == "Release" ? DiagnosticAssemblyMode.Release : DiagnosticAssemblyMode.Debug;
             var platform = DiagnosticAssembyPlatform.x64;
 
-            var assembly = engine.Compile(script, level, platform);
+            try
+            {
+                var assembly = engine.Compile(script, level, platform);
 
-            string result = assembly.Execute(argument);
+                string result = assembly.Execute(argument);
 
-            string ilText = assembly.DumpIL();
-            UpdateIL(ilText);
+                string ilText = assembly.DumpIL();
+                UpdateIL(ilText);
 
-            string asmText = assembly.DumpASM();
-            UpdateASM(asmText);
-            
-            UpdateLog("Script processing ended.");
+                string asmText = assembly.DumpASM();
+                UpdateASM(asmText);
+
+                UpdateLog("Script processing ended.");
+            }
+            catch (Exception ex)
+            {
+                UpdateLog(ex.ToString());
+            }
+           
         }
 
         private void UpdateLog(string str)

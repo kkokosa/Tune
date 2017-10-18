@@ -38,12 +38,14 @@ namespace Tune.Core
             {
                 var x = emitResult.Diagnostics;
                 this.engine.UpdateLog($"Script compilation failed: {string.Join(Environment.NewLine, x.Select(d => d.ToString()))}.");
-                throw new Exception();
             }
-            this.engine.UpdateLog("Script compilation succeeded.");
-            this.dllStream.Seek(0, SeekOrigin.Begin);
-            this.assembly = Assembly.Load(this.dllStream.ToArray());
-            this.engine.UpdateLog("Dynamic assembly loaded.");
+            else
+            {
+                this.engine.UpdateLog("Script compilation succeeded.");
+                this.dllStream.Seek(0, SeekOrigin.Begin);
+                this.assembly = Assembly.Load(this.dllStream.ToArray());
+                this.engine.UpdateLog("Dynamic assembly loaded.");
+            }
         }
 
         public string Execute(string argument)
@@ -149,7 +151,7 @@ namespace Tune.Core
             var info = FindNonEmptyHotColdInfo(method);
             if (info == null)
             {
-                writer.WriteLine("    ; Failed to find HotColdInfo");
+                writer.WriteLine("    ; Unable to load method data (not JITted?)");
                 return;
             }
             var methodAddress = info.HotStart;
