@@ -30,20 +30,20 @@ namespace Tune.Core
         {
             this.engine = engine;
             this.assemblyName = assemblyName;
-            //UpdateLog($"Script compilation into assembly {assemblyName} in {level}.");
+            this.engine.UpdateLog($"Script compilation into assembly {assemblyName}.");
             this.dllStream = new MemoryStream();
             this.pdbStream = new MemoryStream();
             var emitResult = compilation.Emit(this.dllStream, this.pdbStream);
             if (!emitResult.Success)
             {
                 var x = emitResult.Diagnostics;
-                //UpdateLog($"Script compilation failed: {string.Join(Environment.NewLine, x.Select(d => d.ToString()))}.");
+                this.engine.UpdateLog($"Script compilation failed: {string.Join(Environment.NewLine, x.Select(d => d.ToString()))}.");
                 throw new Exception();
             }
-            //UpdateLog("Script compilation succeeded.");
+            this.engine.UpdateLog("Script compilation succeeded.");
             this.dllStream.Seek(0, SeekOrigin.Begin);
             this.assembly = Assembly.Load(this.dllStream.ToArray());
-            //UpdateLog("Dynamic assembly loaded.");
+            this.engine.UpdateLog("Dynamic assembly loaded.");
         }
 
         public string Execute(string argument)
@@ -51,23 +51,23 @@ namespace Tune.Core
             Type type = assembly.GetTypes().First();
             MethodInfo mi = type.GetMethods(BindingFlags.Instance | BindingFlags.Public).First();
             object obj = Activator.CreateInstance(type);
-            //UpdateLog($"Object with type {type.FullName} and method {mi.Name} resolved.");
+            this.engine.UpdateLog($"Object with type {type.FullName} and method {mi.Name} resolved.");
 
             object result = null;
             try
             {
                 TextWriter programWriter = new StringWriter();
                 Console.SetOut(programWriter);
-                //UpdateLog($"Invoking method {mi.Name} with argument {tuple.Item2}");
+                this.engine.UpdateLog($"Invoking method {mi.Name} with argument {argument}");
                 result = mi.Invoke(obj, new object[] { argument });
-                //UpdateLog($"Script result: {result}");
-                //UpdateLog("Script log:");
-                //UpdateLog(programWriter.ToString(), printTime: false);
+                this.engine.UpdateLog($"Script result: {result}");
+                this.engine.UpdateLog("Script log:");
+                this.engine.UpdateLog(programWriter.ToString());
                 return result.ToString();
             }
             catch (Exception e)
             {
-                //UpdateLog($"Script execution failed: {e.ToString()}");
+                this.engine.UpdateLog($"Script execution failed: {e.ToString()}");
                 return e.ToString();
             }
         }
@@ -79,8 +79,7 @@ namespace Tune.Core
             var ilOutput = new PlainTextOutput(ilWriter);
             var reflectionDisassembler = new ReflectionDisassembler(ilOutput, false, CancellationToken.None);
             reflectionDisassembler.WriteModuleContents(assemblyDefinition.MainModule);
-            //UpdateLog("Dynamic assembly disassembled to IL.");
-            //UpdateIL(ilWriter.ToString());
+            this.engine.UpdateLog("Dynamic assembly disassembled to IL.");
             return ilWriter.ToString();
         }
 
@@ -91,13 +90,13 @@ namespace Tune.Core
             {
                 foreach (ClrInfo clrInfo in target.ClrVersions)
                 {
-                    //UpdateLog("Found CLR Version:" + clrInfo.Version.ToString());
+                    this.engine.UpdateLog("Found CLR Version:" + clrInfo.Version.ToString());
 
                     // This is the data needed to request the dac from the symbol server:
                     ModuleInfo dacInfo = clrInfo.DacInfo;
-                    //UpdateLog($"Filesize:  {dacInfo.FileSize:X}");
-                    //UpdateLog($"Timestamp: {dacInfo.TimeStamp:X}");
-                    //UpdateLog($"Dac File:  {dacInfo.FileName}");
+                    this.engine.UpdateLog($"Filesize:  {dacInfo.FileSize:X}");
+                    this.engine.UpdateLog($"Timestamp: {dacInfo.TimeStamp:X}");
+                    this.engine.UpdateLog($"Dac File:  {dacInfo.FileName}");
 
                     ClrRuntime runtime = target.ClrVersions.Single().CreateRuntime();
                     var appDomain = runtime.AppDomains[0];
@@ -134,11 +133,10 @@ namespace Tune.Core
                             //ulong endAddress = method.ILOffsetMap.Select(entry => entry.EndAddress).Max();
 
                             DisassembleAndWrite(method, mode, translator, ref currentMethodAddress, asmWriter);
-                            //UpdateLog($"Method {method.Name} disassembled to ASM.");
+                            this.engine.UpdateLog($"Method {method.Name} disassembled to ASM.");
                             asmWriter.WriteLine();
                         }
                     }
-                    //UpdateASM(asmWriter.ToString());
                     break;
                 }
             }

@@ -14,6 +14,9 @@ namespace Tune.Core
 {
     public class DiagnosticEngine
     {
+        public delegate void LogHandler(string message);
+        public event LogHandler Log;
+
         public DiagnosticEngine()
         {
             this.nativeTarget = new NativeTarget(Process.GetCurrentProcess().Id);
@@ -22,7 +25,7 @@ namespace Tune.Core
         public DiagnosticAssembly Compile(string script, DiagnosticAssemblyMode mode, DiagnosticAssembyPlatform platform)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(script);
-            //UpdateLog("Script parsed.");
+            UpdateLog("Script parsed.");
 
             string assemblyName = $"assemblyName_{DateTime.Now.Ticks}";
             OptimizationLevel compilationLevel = mode == DiagnosticAssemblyMode.Release //cbMode.SelectedItem.ToString() == "Release"
@@ -40,6 +43,11 @@ namespace Tune.Core
 
             var result = new DiagnosticAssembly(this, assemblyName, compilation);
             return result;
+        }
+
+        public void UpdateLog(string message)
+        {
+            this.Log?.Invoke(message);
         }
 
         public Symbol ResolveNativeSymbol(ulong address)

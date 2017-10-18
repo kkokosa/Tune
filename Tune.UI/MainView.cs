@@ -47,6 +47,9 @@ namespace Tune.UI
             Version version = Assembly.GetEntryAssembly().GetName().Version;
             this.Text += $" {version.ToString()}";
 
+            this.engine = new DiagnosticEngine();
+            this.engine.Log += UpdateLog;
+
             IHighlightingDefinition asmGiHighlightingDefinition;
             using (TextReader s = new StringReader(Resources.SyntaxHighlightingIL))
             {
@@ -231,10 +234,11 @@ namespace Tune.UI
             UpdateLog("Script processing ended.");
         }
 
-        private void UpdateLog(string str, bool printTime = true)
+        private void UpdateLog(string str)
         {
             if (tbResult.InvokeRequired)
             {
+                bool printTime = true;
                 string log = printTime
                     ? $"[{DateTime.Now:hh:mm:ss.fff}] {str}{Environment.NewLine}"
                     : $"{str}{Environment.NewLine}";
