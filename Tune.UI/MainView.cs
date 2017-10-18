@@ -26,6 +26,7 @@ using SharpDisasm.Translators;
 using Application = System.Windows.Forms.Application;
 using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = System.Windows.Forms.MessageBox;
+using Tune.Core;
 
 namespace Tune.UI
 {
@@ -239,130 +240,23 @@ namespace Tune.UI
         private void RunAsync(object parameters)
         {
             var tuple = parameters as Tuple<string, string>;
-            var syntaxTree = CSharpSyntaxTree.ParseText(tuple.Item1);
-            UpdateLog("Script parsed.");
+            var script = tuple.Item1;
+            var argument = tuple.Item2;
+            var level = cbMode.SelectedItem.ToString() == "Release" ? DiagnosticAssemblyMode.Release : DiagnosticAssemblyMode.Debug;
+            var platform = DiagnosticAssembyPlatform.x64;
 
-            string assemblyName = $"assemblyName_{DateTime.Now.Ticks}";
-            OptimizationLevel level = cbMode.SelectedItem.ToString() == "Release"
-                ? OptimizationLevel.Release
-                : OptimizationLevel.Debug;
-            CSharpCompilation compilation = CSharpCompilation.Create(
-                assemblyName,
-                new[] { syntaxTree },
-                new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, 
-                    optimizationLevel: level,
-                    allowUnsafe: true,
-                    platform: Platform.X64));
-            UpdateLog($"Script compilation into assembly {assemblyName} in {level}.");
+            var engine = new DiagnosticEngine();
+            var assembly = engine.Compile(script, level, platform);
 
-            using (var dllStream = new MemoryStream())
-            using (var pdbStream = new MemoryStream())
-            {
-                var emitResult = compilation.Emit(dllStream, pdbStream);
-                if (!emitResult.Success)
-                {
-                    var x = emitResult.Diagnostics;
-                    UpdateLog($"Script compilation failed: {string.Join(Environment.NewLine, x.Select(d => d.ToString()))}.");
-                    return;
-                }
-                UpdateLog("Script compilation succeeded.");
+            string result = assembly.Execute(argument);
 
-                dllStream.Seek(0, SeekOrigin.Begin);
-                Assembly assembly = Assembly.Load(dllStream.ToArray());
-                UpdateLog("Dynamic assembly loaded.");
+            string ilText = assembly.DumpIL();
+            UpdateIL(ilText);
 
-                Type type = assembly.GetTypes().First();
-                MethodInfo mi = type.GetMethods(BindingFlags.Instance | BindingFlags.Public).First();
-                object obj = Activator.CreateInstance(type);
-                UpdateLog($"Object with type {type.FullName} and method {mi.Name} resolved.");
-
-                object result = null;
-                try
-                {
-                    TextWriter programWriter = new StringWriter();
-                    Console.SetOut(programWriter);
-                    UpdateLog($"Invoking method {mi.Name} with argument {tuple.Item2}");
-                    result = mi.Invoke(obj, new object[] { tuple.Item2 });
-                    UpdateLog($"Script result: {result}");
-                    UpdateLog("Script log:");
-                    UpdateLog(programWriter.ToString(), printTime: false);
-                }
-                catch (Exception e)
-                {
-                    UpdateLog($"Script execution failed: {e.ToString()}");
-                    return;
-                }
-
-                // IL
-                TextWriter ilWriter = new StringWriter();
-                var assemblyDefinition = AssemblyDefinition.ReadAssembly(dllStream);
-                var ilOutput = new PlainTextOutput(ilWriter);
-                var reflectionDisassembler = new ReflectionDisassembler(ilOutput, false, CancellationToken.None);
-                reflectionDisassembler.WriteModuleContents(assemblyDefinition.MainModule);
-                UpdateLog("Dynamic assembly disassembled to IL.");
-                UpdateIL(ilWriter.ToString());
-
-                // ASM
-                using (DataTarget target = DataTarget.AttachToProcess(Process.GetCurrentProcess().Id, 5000, AttachFlag.Passive))
-                {
-                    foreach (ClrInfo clrInfo in target.ClrVersions)
-                    {
-                        UpdateLog("Found CLR Version:" + clrInfo.Version.ToString());
-
-                        // This is the data needed to request the dac from the symbol server:
-                        ModuleInfo dacInfo = clrInfo.DacInfo;
-                        UpdateLog($"Filesize:  {dacInfo.FileSize:X}");
-                        UpdateLog($"Timestamp: {dacInfo.TimeStamp:X}");
-                        UpdateLog($"Dac File:  {dacInfo.FileName}");
-
-                        this.runtime = target.ClrVersions.Single().CreateRuntime();
-                        var appDomain = runtime.AppDomains[0];
-                        var module = appDomain.Modules.LastOrDefault(m => m.AssemblyName != null && m.AssemblyName.StartsWith(assemblyName));
-                        TextWriter asmWriter = new StringWriter();
-                        asmWriter.WriteLine(
-                            $"; {clrInfo.ModuleInfo.ToString()} ({clrInfo.Flavor} {clrInfo.Version})");
-                        asmWriter.WriteLine(
-                            $"; {clrInfo.DacInfo.FileName} ({clrInfo.DacInfo.TargetArchitecture} {clrInfo.DacInfo.Version})");
-                        asmWriter.WriteLine();
-                        foreach (var typeClr in module.EnumerateTypes())
-                        {
-                            asmWriter.WriteLine($"; Type {typeClr.Name}");
-
-                            ClrHeap heap = runtime.Heap;
-                            ClrType @object = heap.GetTypeByMethodTable(typeClr.MethodTable);
-
-                            foreach (ClrMethod method in @object.Methods)
-                            {
-                                MethodCompilationType compileType = method.CompilationType;
-                                ArchitectureMode mode = clrInfo.DacInfo.TargetArchitecture == Architecture.X86
-                                    ? ArchitectureMode.x86_32
-                                    : ArchitectureMode.x86_64;
-
-                                this.currentMethodAddress = 0;
-                                var translator2 = new IntelTranslator
-                                {
-                                    SymbolResolver = (Instruction instruction, long addr, ref long offset) =>
-                                        ResolveSymbol(runtime, instruction, addr, ref currentMethodAddress)
-                                };
-                                var translator = new IntelTranslator();
-                                translator.SymbolResolver = AsmSymbolResolver;
-
-                                // This not work even ClrMd says opposite...
-                                //ulong startAddress = method.NativeCode;
-                                //ulong endAddress = method.ILOffsetMap.Select(entry => entry.EndAddress).Max();
-
-                                DisassembleAndWrite(method, mode, translator2, ref currentMethodAddress, asmWriter);
-                                UpdateLog($"Method {method.Name} disassembled to ASM.");
-                                asmWriter.WriteLine();
-                            }
-                        }
-                        UpdateASM(asmWriter.ToString());
-                        break;
-                    }
-                }
-                UpdateLog("Script processing ended.");
-            }
+            string asmText = assembly.DumpASM();
+            UpdateASM(asmText);
+            
+            UpdateLog("Script processing ended.");
         }
 
         private string AsmSymbolResolver(Instruction instruction, long addr, ref long offset)
