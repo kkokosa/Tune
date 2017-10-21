@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tune.UI", "Tune.UI\Tune.UI.csproj", "{5DD68E3A-FE66-4E93-8D75-054010D959C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tune.UI.WinForms", "Tune.UI.WinForms\Tune.UI.WinForms.csproj", "{5DD68E3A-FE66-4E93-8D75-054010D959C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0657520F-A90D-460D-B406-579E35426A7D}"
 	ProjectSection(SolutionItems) = preProject
