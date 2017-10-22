@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tune.Core", "Tune.Core\Tune.Core.csproj", "{3D3A7F7E-0A3A-43FD-8508-D1514FF57EB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tune.UI", "Tune.UI\Tune.UI.csproj", "{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,18 @@ Global
 		{3D3A7F7E-0A3A-43FD-8508-D1514FF57EB0}.Release|x64.Build.0 = Release|Any CPU
 		{3D3A7F7E-0A3A-43FD-8508-D1514FF57EB0}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D3A7F7E-0A3A-43FD-8508-D1514FF57EB0}.Release|x86.Build.0 = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|x64.Build.0 = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|x64.ActiveCfg = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|x64.Build.0 = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F50BED9A-1651-4E0E-AAD8-014EF35F9EBC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
