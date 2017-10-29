@@ -111,12 +111,34 @@ namespace Tune.Core
                     asmWriter.WriteLine();
                     foreach (var typeClr in module.EnumerateTypes())
                     {
+                        // Note: Accroding to https://github.com/dotnet/coreclr/blob/master/src/vm/methodtable.h:
+                        // "(...) for value types GetBaseSize returns the size of instance fields for
+                        // a boxed value, and GetNumInstanceFieldsBytes for an unboxed value."
+                        // but mentioned method implementation is trivial:
+                        // inline DWORD MethodTable::GetNumInstanceFieldBytes()
+                        //{
+                        //    LIMITED_METHOD_DAC_CONTRACT;
+                        //    return (GetBaseSize() - GetClass()->GetBaseSizePadding());
+                        //}
+
                         asmWriter.WriteLine($"; Type {typeClr.Name}");
-
+                        asmWriter.WriteLine($";    MethodTable: 0x{typeClr.MethodTable:x16}");
+                        asmWriter.WriteLine($";    Size:        {typeClr.BaseSize}{(typeClr.IsValueClass ? string.Format(" (when boxed)") : string.Empty)}");
+                        asmWriter.WriteLine($";    IsValueType: {typeClr.IsValueClass}");
+                        asmWriter.WriteLine($";    IsArray:     {typeClr.IsArray}");
+                        asmWriter.WriteLine($";    IsEnum:      {typeClr.IsEnum}");
+                        asmWriter.WriteLine($";    IsPrimitive: {typeClr.IsPrivate}");
+                        asmWriter.WriteLine( ";    Fields:");
+                        asmWriter.WriteLine( ";        {0,6} {1,16} {2,20} {3,4}", "Offset", "Name", "Type", "Size");
+                        var orderedFields = typeClr.Fields.ToList().OrderBy(x => x.Offset);
+                        foreach (var field in orderedFields)
+                        {
+                            asmWriter.WriteLine($";        {field.Offset,6} {field.Name,16} {field.Type.Name,20} {field.Size,4}");
+                        }
+                        
                         ClrHeap heap = runtime.Heap;
-                        ClrType @object = heap.GetTypeByMethodTable(typeClr.MethodTable);
 
-                        foreach (ClrMethod method in @object.Methods)
+                        foreach (ClrMethod method in typeClr.Methods)
                         {
                             MethodCompilationType compileType = method.CompilationType;
                             ArchitectureMode mode = clrInfo.DacInfo.TargetArchitecture == Architecture.X86
@@ -243,3 +265,4 @@ namespace Tune.Core
         x86
     }
 }
+
