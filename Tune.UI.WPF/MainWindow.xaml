@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Tune.UI.WPF"
+        xmlns:behaviours="clr-namespace:Tune.UI.WPF.Behaviours"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
@@ -25,12 +27,15 @@
                 <RowDefinition Height="57"></RowDefinition>
             </Grid.RowDefinitions>
             <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-                Name="TextEditor"
                 FontFamily="Consolas"
                 SyntaxHighlighting="C#"
                 FontSize="10pt"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
-                Grid.Row="0" Grid.Column="0" Margin="5,0,5,0" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                Grid.Row="0" Grid.Column="0" Margin="5,0,5,0" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                <i:Interaction.Behaviors>
+                    <behaviours:AvalonEditBehaviour GiveMeTheText="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </i:Interaction.Behaviors>
+            </avalonEdit:TextEditor>
             <GridSplitter Grid.Row="0" Grid.Column="1" Width="5" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="2" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
             <TabControl Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="0" >
                 <TabItem Header="Log">

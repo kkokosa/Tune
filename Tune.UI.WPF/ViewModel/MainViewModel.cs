@@ -9,6 +9,7 @@ namespace Tune.UI.WPF.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly Assembly mainAssembly;
+        private string script;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -16,7 +17,7 @@ namespace Tune.UI.WPF.ViewModel
         public MainViewModel()
         {
             this.mainAssembly = Assembly.GetEntryAssembly();
-            this.RunScriptCommand = new RelayCommand(RunScript);
+            this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
         }
 
         public string Title
@@ -30,11 +31,22 @@ namespace Tune.UI.WPF.ViewModel
             }
         }
 
-        public ICommand RunScriptCommand { get; private set; }
+        public string Script
+        {
+            get { return this.script; }
+            set { this.script = value; RaisePropertyChanged(nameof(Script)); this.RunScriptCommand.RaiseCanExecuteChanged(); }
+        }
+
+        public RelayCommand RunScriptCommand { get; private set; }
 
         private void RunScript()
         {
-            int x = 1;
+            string x = Script;
+        }
+
+        private bool CanRunScript()
+        {
+            return !string.IsNullOrWhiteSpace(this.Script);
         }
     }
 }
