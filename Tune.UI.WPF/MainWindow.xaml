@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tune.UI.WPF"
         mc:Ignorable="d"
-        Title="TUNE - The Ultimate .NET Experiment" Height="820" Width="1132" WindowStartupLocation="CenterScreen">
+        Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"></RowDefinition>
@@ -34,7 +35,6 @@
             <TabControl Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="0" >
                 <TabItem Header="Log">
                     <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-                                           Name="LogText"
                                            FontFamily="Consolas"
                                            SyntaxHighlighting="HTML"
                                            FontSize="10pt"
@@ -42,10 +42,20 @@
                                            Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
                 </TabItem>
                 <TabItem Header="IL">
-                    <Grid Background="#FFE5E5E5"/>
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="C#"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
                 </TabItem>
                 <TabItem Header="ASM">
-                    <Grid Background="#FFE5E5E5"/>
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="C#"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
                 </TabItem>
                 <TabItem Header="Graphs">
                     <Grid Background="#FFE5E5E5"/>
@@ -56,7 +66,7 @@
                     <ComboBoxItem Content="Debug"/>
                     <ComboBoxItem Content="Release"/>
                 </ComboBox>
-                <Button Margin="5,0,5,5" Content="Run"/>
+                <Button Margin="5,0,5,5" Content="Run" Command="{Binding RunScriptCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>
