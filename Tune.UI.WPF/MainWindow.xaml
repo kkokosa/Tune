@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:local="clr-namespace:Tune.UI.WPF"
+        xmlns:enums="clr-namespace:Tune.Core;assembly=Tune.Core"
         xmlns:behaviours="clr-namespace:Tune.UI.WPF.Behaviours"
+        xmlns:extensions="clr-namespace:Tune.UI.WPF.Extensions"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
@@ -24,7 +25,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="57"></RowDefinition>
+                <RowDefinition Height="114"></RowDefinition>
             </Grid.RowDefinitions>
             <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                 FontFamily="Consolas"
@@ -79,10 +80,9 @@
                 </TabItem>
             </TabControl>
             <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
-                <ComboBox Margin="5" SelectedIndex="0">
-                    <ComboBoxItem Content="Debug"/>
-                    <ComboBoxItem Content="Release"/>
-                </ComboBox>
+                <TextBox Margin="5" Text="{Binding ScriptArgument}" FontFamily="Consolas" Height="24" VerticalContentAlignment="Center"/>
+                <ComboBox Margin="5,0,5,5" SelectedValue="{Binding AssemblyMode}" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssemblyMode}}}" />
+                <ComboBox Margin="5,0,5,5" SelectedIndex="0" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssembyPlatform}}}" IsEnabled="False" />
                 <Button Margin="5,0,5,5" Content="Run" Command="{Binding RunScriptCommand}"/>
             </StackPanel>
         </Grid>
