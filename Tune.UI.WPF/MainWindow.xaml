@@ -33,7 +33,7 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
                 Grid.Row="0" Grid.Column="0" Margin="5,0,5,0" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                 <i:Interaction.Behaviors>
-                    <behaviours:AvalonEditBehaviour GiveMeTheText="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <behaviours:AvalonEditBehaviour EditorText="{Binding ScriptText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </i:Interaction.Behaviors>
             </avalonEdit:TextEditor>
             <GridSplitter Grid.Row="0" Grid.Column="1" Width="5" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="2" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
@@ -44,7 +44,11 @@
                                            SyntaxHighlighting="HTML"
                                            FontSize="10pt"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
-                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding LogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
                 </TabItem>
                 <TabItem Header="IL">
                     <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
@@ -52,7 +56,11 @@
                                            SyntaxHighlighting="C#"
                                            FontSize="10pt"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
-                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding IlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
                 </TabItem>
                 <TabItem Header="ASM">
                     <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
@@ -60,7 +68,11 @@
                                            SyntaxHighlighting="C#"
                                            FontSize="10pt"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
-                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding AsmText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
                 </TabItem>
                 <TabItem Header="Graphs">
                     <Grid Background="#FFE5E5E5"/>

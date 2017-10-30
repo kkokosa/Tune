@@ -11,14 +11,14 @@ namespace Tune.UI.WPF.Behaviours
 {
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
-        public static readonly DependencyProperty GiveMeTheTextProperty =
-            DependencyProperty.Register("GiveMeTheText", typeof(string), typeof(AvalonEditBehaviour),
+        public static readonly DependencyProperty EditorTextProperty =
+            DependencyProperty.Register("EditorText", typeof(string), typeof(AvalonEditBehaviour),
                 new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback));
 
-        public string GiveMeTheText
+        public string EditorText
         {
-            get { return (string)GetValue(GiveMeTheTextProperty); }
-            set { SetValue(GiveMeTheTextProperty, value); }
+            get { return (string)GetValue(EditorTextProperty); }
+            set { SetValue(EditorTextProperty, value); }
         }
 
         protected override void OnAttached()
@@ -41,7 +41,7 @@ namespace Tune.UI.WPF.Behaviours
             if (textEditor != null)
             {
                 if (textEditor.Document != null)
-                    GiveMeTheText = textEditor.Document.Text;
+                    EditorText = textEditor.Document.Text;
             }
         }
 
