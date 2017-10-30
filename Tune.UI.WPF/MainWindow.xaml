@@ -12,6 +12,52 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="24"></RowDefinition>
         </Grid.RowDefinitions>
-        <StatusBar HorizontalAlignment="Stretch" Height="Auto" Margin="00" Grid.Row="2" VerticalAlignment="Stretch" Width="Auto"/>
+        <StatusBar HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Width="Auto"/>
+        <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="57"></RowDefinition>
+            </Grid.RowDefinitions>
+            <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                Name="TextEditor"
+                FontFamily="Consolas"
+                SyntaxHighlighting="C#"
+                FontSize="10pt"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                Grid.Row="0" Grid.Column="0" Margin="5,0,5,0" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+            <GridSplitter Grid.Row="0" Grid.Column="1" Width="5" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="2" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
+            <TabControl Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="0" >
+                <TabItem Header="Log">
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           Name="LogText"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="HTML"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                </TabItem>
+                <TabItem Header="IL">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="ASM">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="Graphs">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+            <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
+                <ComboBox Margin="5" SelectedIndex="0">
+                    <ComboBoxItem Content="Debug"/>
+                    <ComboBoxItem Content="Release"/>
+                </ComboBox>
+                <Button Margin="5,0,5,5" Content="Run"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
