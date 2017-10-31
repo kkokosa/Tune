@@ -11,13 +11,26 @@
         Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="24"></RowDefinition>
         </Grid.RowDefinitions>
-        <StatusBar HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Width="Auto"/>
-        <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
+        <DockPanel Grid.ColumnSpan="2">
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Command="{Binding LoadScriptCommand}"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="E_xit" Command="{Binding ExitCommand}"></MenuItem>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <StatusBar HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Width="Auto" Grid.ColumnSpan="2"/>
+        <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
                 <ColumnDefinition Width="5"></ColumnDefinition>
@@ -28,6 +41,7 @@
                 <RowDefinition Height="114"></RowDefinition>
             </Grid.RowDefinitions>
             <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                Name="ScriptEditor"
                 FontFamily="Consolas"
                 SyntaxHighlighting="C#"
                 FontSize="10pt"

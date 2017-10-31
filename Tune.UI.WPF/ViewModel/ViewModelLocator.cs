@@ -15,6 +15,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using Tune.UI.WPF.Services;
 
 namespace Tune.UI.WPF.ViewModel
 {
@@ -43,6 +44,7 @@ namespace Tune.UI.WPF.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<IFileService, FileService>();
         }
 
         public MainViewModel MainViewModel

@@ -121,6 +121,9 @@
     </ApplicationDefinition>
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
+    <Resource Include="Samples\ScriptSample01.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\IFileService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
@@ -170,6 +173,7 @@
       <Name>Tune.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y "C:\Program Files (x86)\Windows Kits\10\Debuggers\$(PlatformName)\symsrv.dll" $(TargetDir)

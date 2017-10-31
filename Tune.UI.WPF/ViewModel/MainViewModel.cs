@@ -1,12 +1,16 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Resources;
 using System.Windows.Threading;
 using Tune.Core;
+using Tune.UI.WPF.Services;
 
 namespace Tune.UI.WPF.ViewModel
 {
@@ -23,17 +27,27 @@ namespace Tune.UI.WPF.ViewModel
         private DiagnosticAssembyPlatform assembyPlatform;
         private MainViewModelState state;
 
+        private IFileService fileService;
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IFileService fileService)
         {
+            // Initial state
             this.scriptArgument = "<Argument>";
             this.state = MainViewModelState.Idle;
             this.mainAssembly = Assembly.GetEntryAssembly();
-            this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
             this.engine = new DiagnosticEngine();
             this.engine.Log += UpdateLog;
+
+            // Commands
+            this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
+            this.ExitCommand = new RelayCommand(Exit);
+            this.LoadScriptCommand = new RelayCommand(LoadScript);
+
+            // Services
+            this.fileService = fileService;
         }
 
         public string Title
@@ -50,7 +64,7 @@ namespace Tune.UI.WPF.ViewModel
         public string ScriptText
         {
             get { return this.scriptText; }
-            set { this.scriptText = value; RaisePropertyChanged(nameof(ScriptText)); this.RunScriptCommand.RaiseCanExecuteChanged(); }
+            set { this.scriptText = value; RaisePropertyChanged(nameof(ScriptText)); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
         }
 
         public string ScriptArgument
@@ -68,7 +82,7 @@ namespace Tune.UI.WPF.ViewModel
         public MainViewModelState State
         {
             get { return this.state; }
-            set { this.state = value; RaisePropertyChanged(nameof(State)); this.RunScriptCommand.RaiseCanExecuteChanged(); }
+            set { this.state = value; RaisePropertyChanged(nameof(State)); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
         }
 
         public string IlText
@@ -94,6 +108,8 @@ namespace Tune.UI.WPF.ViewModel
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
+        public RelayCommand LoadScriptCommand { get; private set; }
+        public RelayCommand ExitCommand { get; private set; }
 
         private async void RunScript()
         {
@@ -106,6 +122,20 @@ namespace Tune.UI.WPF.ViewModel
                 token);
             this.State = MainViewModelState.Idle;
             UpdateLog($"Running ended with success {result}");
+        }
+
+        private void LoadScript()
+        {
+            var path = fileService.OpenFileDialog("C:\\");
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                this.ScriptText = fileService.FileReadToEnd(path);
+            }
+        }
+
+        private void Exit()
+        {
+            Application.Current.MainWindow.Close();
         }
 
         private bool CanRunScript()
