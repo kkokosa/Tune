@@ -7,6 +7,7 @@
         xmlns:enums="clr-namespace:Tune.Core;assembly=Tune.Core"
         xmlns:behaviours="clr-namespace:Tune.UI.WPF.Behaviours"
         xmlns:extensions="clr-namespace:Tune.UI.WPF.Extensions"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
@@ -90,7 +91,11 @@
                     </avalonEdit:TextEditor>
                 </TabItem>
                 <TabItem Header="Graphs">
-                    <Grid Background="#FFE5E5E5"/>
+                    <ScrollViewer>
+                        <StackPanel HorizontalAlignment="Stretch" Height="Auto">
+                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}"></lvc:CartesianChart>
+                        </StackPanel>
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
             <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">

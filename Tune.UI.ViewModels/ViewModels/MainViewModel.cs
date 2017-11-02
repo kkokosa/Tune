@@ -7,7 +7,8 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
+using LiveCharts;
+using LiveCharts.Wpf;
 using Tune.Core;
 using Tune.UI.MVVM.Services;
 
@@ -119,6 +120,16 @@ namespace Tune.UI.MVVM.ViewModels
         {
             get { return this.assembyPlatform; }
             private set { Set(nameof(AssemblyPlatform), ref this.assembyPlatform, value); }
+        }
+
+        public SeriesCollection GraphDataGC
+        {
+            get
+            {
+                return new SeriesCollection
+                {
+                };
+            }
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
