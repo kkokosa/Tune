@@ -8,12 +8,19 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Tune.Core;
 using Tune.UI.MVVM.Services;
 
 namespace Tune.UI.MVVM.ViewModels
 {
+    public class DateViewModel
+    {
+        public System.DateTime DateTime { get; set; }
+        public double Value { get; set; }
+    }
+
     public class MainViewModel : ViewModelBase
     {
         private DiagnosticEngine engine;
@@ -29,6 +36,8 @@ namespace Tune.UI.MVVM.ViewModels
 
         private IFileService fileService;
         private IApplicationService applicationService;
+
+        private IPointEvaluator<DateViewModel> mapper;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -63,6 +72,11 @@ namespace Tune.UI.MVVM.ViewModels
                 {
                     this.RunScriptCommand?.RaiseCanExecuteChanged();
                 });
+
+            // LiveCharts customization
+            this.mapper = Mappers.Xy<DateViewModel>()
+                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
+                .Y(dayModel => dayModel.Value);
         }
 
         public string Title
@@ -126,8 +140,24 @@ namespace Tune.UI.MVVM.ViewModels
         {
             get
             {
-                return new SeriesCollection
+                return new SeriesCollection(mapper)
                 {
+                    new LineSeries
+                    {
+                        Values = new ChartValues<DateViewModel>
+                        {
+                            new DateViewModel
+                            {
+                                DateTime = System.DateTime.Now,
+                                Value = 5
+                            },
+                            new DateViewModel
+                            {
+                                DateTime = System.DateTime.Now.AddSeconds(2),
+                                Value = 9
+                            }
+                        }
+                    }
                 };
             }
         }
@@ -194,6 +224,13 @@ namespace Tune.UI.MVVM.ViewModels
                 ? $"[{DateTime.Now:hh:mm:ss.fff}] {str}{Environment.NewLine}"
                 : $"{str}{Environment.NewLine}";
             LogText += log;
+        }
+
+        public Func<double, string> Formatter {
+            get
+            {
+                return value => new System.DateTime((long) (value * TimeSpan.FromHours(1).Ticks)).ToString("t");
+            } 
         }
     }
 
