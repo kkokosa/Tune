@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Tune.Core.Collectors;
 
 namespace Tune.Core
 {
@@ -61,7 +62,18 @@ namespace Tune.Core
                 TextWriter programWriter = new StringWriter();
                 Console.SetOut(programWriter);
                 this.engine.UpdateLog($"Invoking method {mi.Name} with argument {argument}");
-                result = mi.Invoke(obj, new object[] { argument });
+
+                using (var collector = new DotNetRuntimeEtwCollector())
+                {
+                    collector.Start();
+                    result = mi.Invoke(obj, new object[] {argument});
+                    collector.Stop();
+
+                    this.Generation0DataPoints = collector.Generation0SizeSeries;
+                    this.Generation1DataPoints = collector.Generation1SizeSeries;
+                    this.Generation2DataPoints = collector.Generation2SizeSeries;
+                }
+
                 this.engine.UpdateLog($"Script result: {result}");
                 this.engine.UpdateLog("Script log:");
                 this.engine.UpdateLog(programWriter.ToString());
@@ -73,6 +85,10 @@ namespace Tune.Core
                 return e.ToString();
             }
         }
+
+        public List<DiagnosticDataPoint> Generation0DataPoints { get; private set; }
+        public List<DiagnosticDataPoint> Generation1DataPoints { get; private set; }
+        public List<DiagnosticDataPoint> Generation2DataPoints { get; private set; }
 
         public string DumpIL()
         {

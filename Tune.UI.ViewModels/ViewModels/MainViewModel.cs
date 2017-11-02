@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
@@ -77,6 +79,8 @@ namespace Tune.UI.MVVM.ViewModels
             this.mapper = Mappers.Xy<DateViewModel>()
                 .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
                 .Y(dayModel => dayModel.Value);
+
+            this.GraphDataGC = new SeriesCollection();
         }
 
         public string Title
@@ -138,28 +142,8 @@ namespace Tune.UI.MVVM.ViewModels
 
         public SeriesCollection GraphDataGC
         {
-            get
-            {
-                return new SeriesCollection(mapper)
-                {
-                    new LineSeries
-                    {
-                        Values = new ChartValues<DateViewModel>
-                        {
-                            new DateViewModel
-                            {
-                                DateTime = System.DateTime.Now,
-                                Value = 5
-                            },
-                            new DateViewModel
-                            {
-                                DateTime = System.DateTime.Now.AddSeconds(2),
-                                Value = 9
-                            }
-                        }
-                    }
-                };
-            }
+            get;
+            private set;
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
@@ -206,6 +190,27 @@ namespace Tune.UI.MVVM.ViewModels
                 string result = assembly.Execute(argument);
                 this.IlText = assembly.DumpIL();
                 this.AsmText = assembly.DumpASM();
+                var dataGen0 = assembly.Generation0DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
+                var dataGen1 = assembly.Generation1DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
+                var dataGen2 = assembly.Generation2DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var seriesGen0 = new LineSeries(mapper) { Title= "Gen0", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 10 };
+                    seriesGen0.Values = new ChartValues<DateViewModel>();
+                    seriesGen0.Values.AddRange(dataGen0);
+                    var seriesGen1 = new LineSeries(mapper) { Title = "Gen1", LineSmoothness = 0 };
+                    seriesGen1.Values = new ChartValues<DateViewModel>();
+                    seriesGen1.Values.AddRange(dataGen1);
+                    var seriesGen2 = new LineSeries(mapper) { Title = "Gen2", LineSmoothness = 0 };
+                    seriesGen2.Values = new ChartValues<DateViewModel>();
+                    seriesGen2.Values.AddRange(dataGen2);
+                    GraphDataGC.Clear();
+                    GraphDataGC.Add(seriesGen0);
+                    GraphDataGC.Add(seriesGen1);
+                    GraphDataGC.Add(seriesGen2);
+                }
+                );
+                //
                 UpdateLog("Script processing ended.");
                 return true;
             }
@@ -226,11 +231,21 @@ namespace Tune.UI.MVVM.ViewModels
             LogText += log;
         }
 
-        public Func<double, string> Formatter {
+        public Func<double, string> XFormatter {
             get
             {
-                return value => new System.DateTime((long) (value * TimeSpan.FromHours(1).Ticks)).ToString("t");
+                return value => new System.DateTime((long) ((value < 0.0 ? 0.0 : value)* TimeSpan.FromHours(1).Ticks)).ToString("hh:mm:ss.ffff");
             } 
+        }
+
+        public Func<double, string> YFormatter
+        {
+            get
+            {
+                var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+                nfi.NumberGroupSeparator = " ";
+                return value => value.ToString("#,0", nfi);
+            }
         }
     }
 

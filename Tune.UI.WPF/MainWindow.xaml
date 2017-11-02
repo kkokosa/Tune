@@ -94,8 +94,11 @@
                     <ScrollViewer>
                         <StackPanel HorizontalAlignment="Stretch" Height="Auto">
                             <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}">
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>                                
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                    <lvc:Axis LabelFormatter="{Binding XFormatter}"></lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                             </lvc:CartesianChart>
                         </StackPanel>
