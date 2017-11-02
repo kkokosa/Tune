@@ -64,47 +64,47 @@ namespace Tune.UI.WPF.ViewModel
         public string ScriptText
         {
             get { return this.scriptText; }
-            set { this.scriptText = value; RaisePropertyChanged(nameof(ScriptText)); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
+            set { Set(nameof(ScriptText), ref this.scriptText, value); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
         }
 
         public string ScriptArgument
         {
             get { return this.scriptArgument; }
-            set { this.scriptArgument = value; RaisePropertyChanged(nameof(ScriptArgument)); }
+            set { Set(nameof(ScriptArgument), ref this.scriptArgument, value); }
         }
 
         public string LogText
         {
             get { return this.logText; }
-            private set { this.logText = value; RaisePropertyChanged(nameof(LogText)); }
+            private set { Set(nameof(LogText), ref this.logText, value); }
         }
 
         public MainViewModelState State
         {
             get { return this.state; }
-            set { this.state = value; RaisePropertyChanged(nameof(State)); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
+            set { Set(nameof(State), ref this.state, value); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
         }
 
         public string IlText
         {
             get { return this.ilText; }
-            private set { this.ilText = value; RaisePropertyChanged(nameof(IlText)); }
+            private set { Set(nameof(IlText), ref this.ilText, value); }
         }
         public string AsmText
         {
             get { return this.asmText; }
-            private set { this.asmText = value; RaisePropertyChanged(nameof(AsmText)); }
+            private set { Set(nameof(AsmText), ref this.asmText, value); }
         }
 
         public DiagnosticAssemblyMode AssemblyMode
         {
             get { return this.assemblyMode; }
-            private set { this.assemblyMode = value; RaisePropertyChanged(nameof(AssemblyMode)); }
+            private set { Set(nameof(AssemblyMode), ref this.assemblyMode, value); }
         }
         public DiagnosticAssembyPlatform AssemblyPlatform
         {
             get { return this.assembyPlatform; }
-            private set { this.assembyPlatform = value; RaisePropertyChanged(nameof(AssemblyPlatform)); }
+            private set { Set(nameof(AssemblyPlatform), ref this.assembyPlatform, value); }
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
