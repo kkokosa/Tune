@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.IO;
 using System.Reflection;
@@ -48,6 +49,19 @@ namespace Tune.UI.WPF.ViewModel
 
             // Services
             this.fileService = fileService;
+
+            // Self-register messages
+            Messenger.Default.Register<PropertyChangedMessage<string>>(
+                this, (e) =>
+                {
+                    if (e.PropertyName == nameof(ScriptText))
+                        this.RunScriptCommand?.RaiseCanExecuteChanged();
+                });
+            Messenger.Default.Register<PropertyChangedMessage<MainViewModelState>>(
+                this, (e) =>
+                {
+                    this.RunScriptCommand?.RaiseCanExecuteChanged();
+                });
         }
 
         public string Title
@@ -64,7 +78,7 @@ namespace Tune.UI.WPF.ViewModel
         public string ScriptText
         {
             get { return this.scriptText; }
-            set { Set(nameof(ScriptText), ref this.scriptText, value); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
+            set { Set(nameof(ScriptText), ref this.scriptText, value, broadcast: true); }
         }
 
         public string ScriptArgument
@@ -82,7 +96,7 @@ namespace Tune.UI.WPF.ViewModel
         public MainViewModelState State
         {
             get { return this.state; }
-            set { Set(nameof(State), ref this.state, value); this.RunScriptCommand?.RaiseCanExecuteChanged(); }
+            set { Set(nameof(State), ref this.state, value, broadcast: true); }
         }
 
         public string IlText
