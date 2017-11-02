@@ -149,10 +149,8 @@ namespace Tune.UI.WPF.ViewModel
             {
                 var assembly = engine.Compile(script, level, platform);
                 string result = assembly.Execute(argument);
-                string ilText = assembly.DumpIL();
-                UpdateIL(ilText);
-                string asmText = assembly.DumpASM();
-                UpdateASM(asmText);
+                this.IlText = assembly.DumpIL();
+                this.AsmText = assembly.DumpASM();
                 UpdateLog("Script processing ended.");
                 return true;
             }
@@ -164,33 +162,8 @@ namespace Tune.UI.WPF.ViewModel
 
         }
 
-        private void UpdateIL(string str)
-        {
-            if (!Dispatcher.CurrentDispatcher.CheckAccess())
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => UpdateIL(str));
-                return;
-            }
-            IlText = str;
-        }
-
-        private void UpdateASM(string str)
-        {
-            if (!Dispatcher.CurrentDispatcher.CheckAccess())
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => UpdateASM(str));
-                return;
-            }
-            AsmText = str;
-        }
-
         private void UpdateLog(string str)
         {
-            if (!Dispatcher.CurrentDispatcher.CheckAccess())
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => UpdateLog(str));
-                return;
-            }
             bool printTime = true;
             string log = printTime
                 ? $"[{DateTime.Now:hh:mm:ss.fff}] {str}{Environment.NewLine}"
