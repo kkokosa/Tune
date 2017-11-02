@@ -10,5 +10,6 @@ namespace Tune.Core
     {
         public System.DateTime DateTime { get; set; }
         public double Value { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
@@ -21,6 +22,7 @@ namespace Tune.UI.MVVM.ViewModels
     {
         public System.DateTime DateTime { get; set; }
         public double Value { get; set; }
+        public string Description { get; set; }
     }
 
     public class MainViewModel : ViewModelBase
@@ -35,6 +37,7 @@ namespace Tune.UI.MVVM.ViewModels
         private DiagnosticAssemblyMode assemblyMode;
         private DiagnosticAssembyPlatform assembyPlatform;
         private MainViewModelState state;
+        private DateViewModel gcSelectedEvent;
 
         private IFileService fileService;
         private IApplicationService applicationService;
@@ -61,6 +64,7 @@ namespace Tune.UI.MVVM.ViewModels
             this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
             this.ExitCommand = new RelayCommand(Exit);
             this.LoadScriptCommand = new RelayCommand(LoadScript);
+            this.GCDataClickCommand = new RelayCommand<ChartPoint>(GCDataClick);
 
             // Self-register messages
             Messenger.Default.Register<PropertyChangedMessage<string>>(
@@ -81,6 +85,11 @@ namespace Tune.UI.MVVM.ViewModels
                 .Y(dayModel => dayModel.Value);
 
             this.GraphDataGC = new SeriesCollection();
+        }
+
+        private void GCDataClick(ChartPoint obj)
+        {
+            this.GCSelectedEvent = obj.Instance as DateViewModel;
         }
 
         public string Title
@@ -146,9 +155,22 @@ namespace Tune.UI.MVVM.ViewModels
             private set;
         }
 
+        public ObservableCollection<DateViewModel> GCEvents
+        {
+            get;
+            private set;
+        }
+
+        public DateViewModel GCSelectedEvent
+        {
+            get { return this.gcSelectedEvent; }
+            private set { Set(nameof(GCSelectedEvent), ref this.gcSelectedEvent, value); }
+        }
+
         public RelayCommand RunScriptCommand { get; private set; }
         public RelayCommand LoadScriptCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
+        public RelayCommand<ChartPoint> GCDataClickCommand { get; set; }
 
         private async void RunScript()
         {
@@ -210,6 +232,8 @@ namespace Tune.UI.MVVM.ViewModels
                     GraphDataGC.Add(seriesGen2);
                 }
                 );
+                this.GCEvents = new ObservableCollection<DateViewModel>(dataGen0);
+                this.RaisePropertyChanged(nameof(GCEvents));
                 //
                 UpdateLog("Script processing ended.");
                 return true;
