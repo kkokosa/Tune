@@ -1,19 +1,17 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+
 using System;
-using System.IO;
+using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Resources;
-using System.Windows.Threading;
-using Tune.Core;
-using Tune.UI.WPF.Services;
 
-namespace Tune.UI.WPF.ViewModel
+using Tune.Core;
+using Tune.UI.MVVM.Services;
+
+namespace Tune.UI.MVVM.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
@@ -29,12 +27,17 @@ namespace Tune.UI.WPF.ViewModel
         private MainViewModelState state;
 
         private IFileService fileService;
+        private IApplicationService applicationService;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IFileService fileService)
+        public MainViewModel(IApplicationService applicationService, IFileService fileService)
         {
+            // Services
+            this.fileService = fileService;
+            this.applicationService = applicationService;
+
             // Initial state
             this.scriptArgument = "<Argument>";
             this.state = MainViewModelState.Idle;
@@ -46,9 +49,6 @@ namespace Tune.UI.WPF.ViewModel
             this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
             this.ExitCommand = new RelayCommand(Exit);
             this.LoadScriptCommand = new RelayCommand(LoadScript);
-
-            // Services
-            this.fileService = fileService;
 
             // Self-register messages
             Messenger.Default.Register<PropertyChangedMessage<string>>(
@@ -149,7 +149,7 @@ namespace Tune.UI.WPF.ViewModel
 
         private void Exit()
         {
-            Application.Current.MainWindow.Close();
+            this.applicationService.Exit();
         }
 
         private bool CanRunScript()

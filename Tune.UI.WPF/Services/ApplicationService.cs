@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tune.UI.MVVM.Services;
 
 namespace Tune.UI.WPF.Services
 {
-    class LogService : ILogService
+    class ApplicationService : IApplicationService
     {
-        public void Log(string message)
+        public void Exit()
         {
-            throw new NotImplementedException();
+            Application.Current.MainWindow.Close();
         }
     }
 }

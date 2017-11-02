@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using Tune.UI.MVVM.Services;
 
 namespace Tune.UI.WPF.Services
 {

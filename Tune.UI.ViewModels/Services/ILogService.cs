@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tune.UI.WPF.Services
+namespace Tune.UI.MVVM.Services
 {
-    interface ILogService
+    public interface ILogService
     {
         void Log(string message);
     }

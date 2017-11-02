@@ -122,11 +122,9 @@
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Resource Include="Samples\ScriptSample01.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\LogService.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -173,6 +171,10 @@
     <ProjectReference Include="..\Tune.Core\Tune.Core.csproj">
       <Project>{3d3a7f7e-0a3a-43fd-8508-d1514ff57eb0}</Project>
       <Name>Tune.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tune.UI.ViewModels\Tune.UI.MVVM.csproj">
+      <Project>{973be13d-4bec-43ba-88c2-bcc1045ac626}</Project>
+      <Name>Tune.UI.MVVM</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
