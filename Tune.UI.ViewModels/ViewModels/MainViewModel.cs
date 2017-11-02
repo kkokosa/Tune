@@ -85,6 +85,7 @@ namespace Tune.UI.MVVM.ViewModels
                 .Y(dayModel => dayModel.Value);
 
             this.GraphDataGC = new SeriesCollection();
+            this.GCSections = new SectionsCollection();
         }
 
         private void GCDataClick(ChartPoint obj)
@@ -155,6 +156,12 @@ namespace Tune.UI.MVVM.ViewModels
             private set;
         }
 
+        public SectionsCollection GCSections
+        {
+            get;
+            private set;
+        }
+
         public ObservableCollection<DateViewModel> GCEvents
         {
             get;
@@ -215,6 +222,11 @@ namespace Tune.UI.MVVM.ViewModels
                 var dataGen0 = assembly.Generation0DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
                 var dataGen1 = assembly.Generation1DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
                 var dataGen2 = assembly.Generation2DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
+                var gcs = assembly.GCsDataPoints.Select(x => new AxisSection()
+                {
+                    SectionOffset = (double)x.DateTime.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks / TimeSpan.FromHours(1).Ticks,
+                    SectionWidth = (double)TimeSpan.FromMilliseconds(1.0).Ticks / TimeSpan.FromHours(1).Ticks
+                });
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
                     var seriesGen0 = new LineSeries(mapper) { Title= "Gen0", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 10 };
@@ -230,6 +242,9 @@ namespace Tune.UI.MVVM.ViewModels
                     GraphDataGC.Add(seriesGen0);
                     GraphDataGC.Add(seriesGen1);
                     GraphDataGC.Add(seriesGen2);
+
+                    GCSections.Clear();
+                    GCSections.AddRange(gcs);
                 }
                 );
                 this.GCEvents = new ObservableCollection<DateViewModel>(dataGen0);

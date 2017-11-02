@@ -93,16 +93,16 @@
                 <TabItem Header="Graphs">
                     <ScrollViewer>
                         <StackPanel HorizontalAlignment="Stretch" Height="Auto">
-                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}" DataClickCommand="{Binding GCDataClickCommand}">
+                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}" DataClickCommand="{Binding GCDataClickCommand}"
+                                                Zoom="X" Pan="X">
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>                                
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis LabelFormatter="{Binding XFormatter}"></lvc:Axis>
+                                    <lvc:Axis LabelFormatter="{Binding XFormatter}" Sections="{Binding GCSections}">
+                                    </lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                             </lvc:CartesianChart>
-                            <DataGrid Height="100" ItemsSource="{Binding GCEvents}" SelectedItem="{Binding GCSelectedEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True"
-                                      SelectionUnit="FullRow" SelectionMode="Extended"  AutoGenerateColumns="True" />
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>

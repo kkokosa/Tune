@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Tracing;
+using Microsoft.Diagnostics.Tracing.Etlx;
+using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using Microsoft.Diagnostics.Tracing.Session;
 
@@ -14,6 +17,7 @@ namespace Tune.Core.Collectors
         private List<DiagnosticDataPoint> generation0SizeSeries = new List<DiagnosticDataPoint>();
         private List<DiagnosticDataPoint> generation1SizeSeries = new List<DiagnosticDataPoint>();
         private List<DiagnosticDataPoint> generation2SizeSeries = new List<DiagnosticDataPoint>();
+        private List<DiagnosticDataPoint> garbageCollectionSeries = new List<DiagnosticDataPoint>();
         private const string providerName = "Microsoft-Windows-DotNETRuntime";
         private const string sessioName = "Tune-DotNetRuntimeSession";
         private TraceEventSession session;
@@ -29,15 +33,30 @@ namespace Tune.Core.Collectors
         public List<DiagnosticDataPoint> Generation0SizeSeries => this.generation0SizeSeries;
         public List<DiagnosticDataPoint> Generation1SizeSeries => this.generation1SizeSeries;
         public List<DiagnosticDataPoint> Generation2SizeSeries => this.generation2SizeSeries;
+        public List<DiagnosticDataPoint> GarbageCollectionSeries => this.garbageCollectionSeries;
 
         private Task RunAsync()
         {
             var eventSourceGuid = TraceEventProviders.GetProviderGuidByName(providerName);
             session = new TraceEventSession(sessioName);
-            session.EnableProvider(eventSourceGuid);
+            var options = new TraceEventProviderOptions() { StacksEnabled = true };
+            session.EnableProvider(eventSourceGuid, TraceEventLevel.Verbose, ulong.MaxValue, options);
+            session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.Default);
             session.Source.Clr.GCHeapStats += ClrOnGcHeapStats;
+            session.Source.Clr.GCStart += ClrOnGcStart;
+            session.Source.Clr.GCStop += ClrOnGcStop;
             session.Source.Process();
             return Task.CompletedTask;
+        }
+
+        private void ClrOnGcStop(GCEndTraceData evt)
+        {
+            garbageCollectionSeries.Add(new DiagnosticDataPoint() {DateTime = evt .TimeStamp, Description = evt.Depth.ToString()} );
+        }
+
+        private void ClrOnGcStart(GCStartTraceData gcStartTraceData)
+        {
+            //var cs = gcStartTraceData.CallStack();
         }
 
         private void ClrOnGcHeapStats(GCHeapStatsTraceData evt)

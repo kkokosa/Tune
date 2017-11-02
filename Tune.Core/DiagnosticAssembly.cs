@@ -72,6 +72,7 @@ namespace Tune.Core
                     this.Generation0DataPoints = collector.Generation0SizeSeries;
                     this.Generation1DataPoints = collector.Generation1SizeSeries;
                     this.Generation2DataPoints = collector.Generation2SizeSeries;
+                    this.GCsDataPoints = collector.GarbageCollectionSeries;
                 }
 
                 this.engine.UpdateLog($"Script result: {result}");
@@ -89,7 +90,7 @@ namespace Tune.Core
         public List<DiagnosticDataPoint> Generation0DataPoints { get; private set; }
         public List<DiagnosticDataPoint> Generation1DataPoints { get; private set; }
         public List<DiagnosticDataPoint> Generation2DataPoints { get; private set; }
-
+        public List<DiagnosticDataPoint> GCsDataPoints { get; private set; }
         public string DumpIL()
         {
             TextWriter ilWriter = new StringWriter();
