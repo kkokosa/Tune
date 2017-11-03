@@ -223,6 +223,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collectors\ClrEtwGenerationData.cs" />
     <Compile Include="Collectors\ClrEtwHeapStatsData.cs" />
     <Compile Include="Collectors\ClrEtwCollector.cs" />
     <Compile Include="Collectors\ClrEtwGcData.cs" />

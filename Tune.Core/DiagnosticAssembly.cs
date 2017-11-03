@@ -71,6 +71,7 @@ namespace Tune.Core
 
                     this.HeapStatsData = collector.HeapStatsData;
                     this.GcData = collector.GcData;
+                    this.GenerationsData = collector.GenerationsData;
                 }
 
                 this.engine.UpdateLog($"Script result: {result}");
@@ -84,6 +85,8 @@ namespace Tune.Core
                 return e.ToString();
             }
         }
+
+        public List<ClrEtwGenerationData>[] GenerationsData { get; set; } = new List<ClrEtwGenerationData>[4];
 
         public List<ClrEtwHeapStatsData> HeapStatsData { get; private set; } = new List<ClrEtwHeapStatsData>();
         public List<ClrEtwGcData> GcData { get; private set; } = new List<ClrEtwGcData>();

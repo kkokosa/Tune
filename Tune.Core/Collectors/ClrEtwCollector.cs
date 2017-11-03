@@ -18,6 +18,13 @@ namespace Tune.Core.Collectors
     {
         private readonly List<ClrEtwGcData> gcData = new List<ClrEtwGcData>();
         private readonly List<ClrEtwHeapStatsData> heapStatsData = new List<ClrEtwHeapStatsData>();
+        private readonly List<ClrEtwGenerationData>[] generationsData = new List<ClrEtwGenerationData>[]
+        {
+            new List<ClrEtwGenerationData>(),
+            new List<ClrEtwGenerationData>(),
+            new List<ClrEtwGenerationData>(),
+            new List<ClrEtwGenerationData>()
+        };
         private const string providerName = "Microsoft-Windows-DotNETRuntime";
         private const string sessioName = "Tune-DotNetRuntimeSession";
 
@@ -33,6 +40,7 @@ namespace Tune.Core.Collectors
 
         public List<ClrEtwHeapStatsData> HeapStatsData => this.heapStatsData;
         public List<ClrEtwGcData> GcData => this.gcData;
+        public List<ClrEtwGenerationData>[] GenerationsData => this.generationsData;
 
         private Task RunAsync()
         {
@@ -51,6 +59,15 @@ namespace Tune.Core.Collectors
 
         private void ClrOnGcGenerationRange(GCGenerationRangeTraceData evt)
         {
+            if (!IsTargetProcess(evt)) return;
+
+            this.generationsData[evt.Generation].Add(new ClrEtwGenerationData()
+            {
+                TimeStamp = evt.TimeStamp,
+                Start = evt.RangeStart,
+                Used = evt.RangeUsedLength,
+                Reserved = evt.RangeReservedLength,
+            });
         }
 
         private void ClrOnGcStop(GCEndTraceData evt)
@@ -66,6 +83,8 @@ namespace Tune.Core.Collectors
 
         private void ClrOnGcStart(GCStartTraceData evt)
         {
+            if (!IsTargetProcess(evt)) return;
+
             //var cs = gcStartTraceData.CallStack();
         }
 
