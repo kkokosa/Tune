@@ -144,7 +144,7 @@ namespace Tune.UI.MVVM.ViewModels
         public string LogText
         {
             get { return this.logText; }
-            private set { Set(nameof(LogText), ref this.logText, value); }
+            set { Set(nameof(LogText), ref this.logText, value); }
         }
 
         public MainViewModelState State
@@ -156,53 +156,53 @@ namespace Tune.UI.MVVM.ViewModels
         public string IlText
         {
             get { return this.ilText; }
-            private set { Set(nameof(IlText), ref this.ilText, value); }
+            set { Set(nameof(IlText), ref this.ilText, value); }
         }
         public string AsmText
         {
             get { return this.asmText; }
-            private set { Set(nameof(AsmText), ref this.asmText, value); }
+            set { Set(nameof(AsmText), ref this.asmText, value); }
         }
 
         public DiagnosticAssemblyMode AssemblyMode
         {
             get { return this.assemblyMode; }
-            private set { Set(nameof(AssemblyMode), ref this.assemblyMode, value); }
+            set { Set(nameof(AssemblyMode), ref this.assemblyMode, value); }
         }
         public DiagnosticAssembyPlatform AssemblyPlatform
         {
             get { return this.assembyPlatform; }
-            private set { Set(nameof(AssemblyPlatform), ref this.assembyPlatform, value); }
+            set { Set(nameof(AssemblyPlatform), ref this.assembyPlatform, value); }
         }
 
         public SeriesCollection GraphDataGC
         {
             get;
-            private set;
+            set;
         }
 
         public SectionsCollection GCSections
         {
             get;
-            private set;
+            set;
         }
 
         public VisualElementsCollection GCSectionsLabels
         {
             get;
-            private set;
+            set;
         }
 
         public ObservableCollection<DateViewModel> GCEvents
         {
             get;
-            private set;
+            set;
         }
 
         public DateViewModel GCSelectedEvent
         {
             get { return this.gcSelectedEvent; }
-            private set { Set(nameof(GCSelectedEvent), ref this.gcSelectedEvent, value); }
+            set { Set(nameof(GCSelectedEvent), ref this.gcSelectedEvent, value); }
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
