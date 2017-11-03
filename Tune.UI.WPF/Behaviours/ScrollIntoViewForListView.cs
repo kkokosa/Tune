@@ -26,15 +26,15 @@ namespace Tune.UI.WPF.Behaviours
         /// <param name="e"></param>
         void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var listBox = sender as ListView;
-            if (listBox?.SelectedItem != null)
+            var listView = sender as ListView;
+            if (listView?.SelectedItem != null)
             {
-                listBox.Dispatcher.BeginInvoke(
+                listView.Dispatcher.BeginInvoke(
                     (Action) (() =>
                     {
-                        listBox.UpdateLayout();
-                        if (listBox.SelectedItem != null)
-                            listBox.ScrollIntoView(listBox.SelectedItem);
+                        listView.UpdateLayout();
+                        if (listView.SelectedItem != null)
+                            listView.ScrollIntoView(listView.SelectedItem);
                     }));
             }
         }
