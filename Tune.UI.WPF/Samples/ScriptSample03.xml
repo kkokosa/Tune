@@ -1,4 +1,8 @@
-﻿using System;
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Experiment>
+  <Script>
+    <![CDATA[
+using System;
 using System.Threading;
 using System.Collections.Generic;
 
@@ -27,3 +31,9 @@ namespace Samples
         public int[] Array = new int[3000];
     }
 }
+    ]]>
+  </Script>
+  <ScriptArgument>
+    4000   
+  </ScriptArgument>
+</Experiment>

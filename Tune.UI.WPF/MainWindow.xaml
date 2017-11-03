@@ -9,7 +9,7 @@
         xmlns:extensions="clr-namespace:Tune.UI.WPF.Extensions"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
+        Title="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,7 +24,9 @@
         <DockPanel Grid.ColumnSpan="2">
             <Menu>
                 <MenuItem Header="_File">
-                    <MenuItem Header="_Open" Command="{Binding LoadScriptCommand}"></MenuItem>
+                    <MenuItem Header="_Open" Command="{Binding LoadExperimentCommand}"></MenuItem>
+                    <MenuItem Header="_Save" Command="{Binding SaveExperimentCommand}"></MenuItem>
+                    <MenuItem Header="S_ave as..." Command="{Binding SaveExperimentAsCommand}"></MenuItem>
                     <Separator />
                     <MenuItem Header="E_xit" Command="{Binding ExitCommand}"></MenuItem>
                 </MenuItem>
@@ -120,7 +122,7 @@
                 </TabItem>
             </TabControl>
             <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
-                <TextBox Margin="5" Text="{Binding ScriptArgument}" FontFamily="Consolas" Height="24" VerticalContentAlignment="Center"/>
+                <TextBox Margin="5" Text="{Binding ScriptArgument, Mode=TwoWay}" FontFamily="Consolas" Height="24" VerticalContentAlignment="Center"/>
                 <ComboBox Margin="5,0,5,5" SelectedValue="{Binding AssemblyMode}" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssemblyMode}}}" />
                 <ComboBox Margin="5,0,5,5" SelectedIndex="0" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssembyPlatform}}}" IsEnabled="False" />
                 <Button Margin="5,0,5,5" Content="Run" Command="{Binding RunScriptCommand}" />

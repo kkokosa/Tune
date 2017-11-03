@@ -87,8 +87,8 @@ namespace Tune.Core.Collectors
         public void Stop()
         {
             stopped = true;
-            session.Stop();
-            session.Dispose();
+            session?.Stop();
+            session?.Dispose();
         }
 
         public void Dispose()

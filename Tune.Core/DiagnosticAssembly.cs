@@ -85,8 +85,8 @@ namespace Tune.Core
             }
         }
 
-        public List<ClrEtwHeapStatsData> HeapStatsData { get; private set; }
-        public List<ClrEtwGcData> GcData { get; private set; }
+        public List<ClrEtwHeapStatsData> HeapStatsData { get; private set; } = new List<ClrEtwHeapStatsData>();
+        public List<ClrEtwGcData> GcData { get; private set; } = new List<ClrEtwGcData>();
         public string DumpIL()
         {
             TextWriter ilWriter = new StringWriter();

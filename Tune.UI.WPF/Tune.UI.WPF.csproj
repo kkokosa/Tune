@@ -130,15 +130,16 @@
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
     <Compile Include="Behaviours\ScrollIntoViewForListView.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
-    <Content Include="Samples\ScriptSample01.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Samples\ScriptSample03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\ScriptSample03.cs">
+    <Content Include="Samples\ScriptSample01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\LogService.cs" />
+    <Compile Include="Services\XmlExperimentFile.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

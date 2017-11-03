@@ -227,7 +227,6 @@
     <Compile Include="Collectors\ClrEtwCollector.cs" />
     <Compile Include="Collectors\ClrEtwGcData.cs" />
     <Compile Include="DiagnosticAssembly.cs" />
-    <Compile Include="DiagnosticDataPoint.cs" />
     <Compile Include="DiagnosticEngine.cs" />
     <Compile Include="NativeTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

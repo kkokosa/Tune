@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
@@ -36,6 +37,7 @@ namespace Tune.UI.MVVM.ViewModels
     {
         private DiagnosticEngine engine;
         private readonly Assembly mainAssembly;
+        private IExperimentFile currentExperimentFile;
         private string scriptText;
         private string scriptArgument;
         private string logText;
@@ -70,7 +72,9 @@ namespace Tune.UI.MVVM.ViewModels
             // Commands
             this.RunScriptCommand = new RelayCommand(RunScript, CanRunScript);
             this.ExitCommand = new RelayCommand(Exit);
-            this.LoadScriptCommand = new RelayCommand(LoadScript);
+            this.LoadExperimentCommand = new RelayCommand(LoadExperiment);
+            this.SaveExperimentCommand = new RelayCommand(SaveExperiment, CanSaveExperiment);
+            this.SaveExperimentAsCommand = new RelayCommand(SaveExperimentAs);
             this.GCDataClickCommand = new RelayCommand<ChartPoint>(GCDataClick);
 
             // Self-register messages
@@ -84,6 +88,12 @@ namespace Tune.UI.MVVM.ViewModels
                 this, (e) =>
                 {
                     this.RunScriptCommand?.RaiseCanExecuteChanged();
+                });
+            Messenger.Default.Register<PropertyChangedMessage<IExperimentFile>>(
+                this, e =>
+                {
+                    this.SaveExperimentCommand?.RaiseCanExecuteChanged();
+                    RaisePropertyChanged(nameof(Title));
                 });
 
             // LiveCharts customization
@@ -108,8 +118,15 @@ namespace Tune.UI.MVVM.ViewModels
                 Version version = this.mainAssembly.GetName().Version;
                 var titleAttribute = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(this.mainAssembly,
                     typeof(AssemblyTitleAttribute));
-                return $"{titleAttribute.Title} {version}";
+                var experimentPatSuffix = CurrentExperimentFile != null ? $" - {CurrentExperimentFile.Path}" : string.Empty;
+                return $"{titleAttribute.Title} {version}{experimentPatSuffix}";
             }
+        }
+
+        public IExperimentFile CurrentExperimentFile
+        {
+            get { return this.currentExperimentFile; }
+            set { Set(nameof(CurrentExperimentFile), ref this.currentExperimentFile, value, broadcast: true); }
         }
 
         public string ScriptText
@@ -189,7 +206,9 @@ namespace Tune.UI.MVVM.ViewModels
         }
 
         public RelayCommand RunScriptCommand { get; private set; }
-        public RelayCommand LoadScriptCommand { get; private set; }
+        public RelayCommand LoadExperimentCommand { get; private set; }
+        public RelayCommand SaveExperimentCommand { get; private set; }
+        public RelayCommand SaveExperimentAsCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
         public RelayCommand<ChartPoint> GCDataClickCommand { get; set; }
 
@@ -206,12 +225,45 @@ namespace Tune.UI.MVVM.ViewModels
             UpdateLog($"Running ended with success {result}");
         }
 
-        private void LoadScript()
+        private bool CanRunScript()
         {
-            var path = fileService.OpenFileDialog("C:\\");
+            return !string.IsNullOrWhiteSpace(this.ScriptText) && this.state != MainViewModelState.Running;
+        }
+
+        private void LoadExperiment()
+        {
+            var path = fileService.OpenFileDialog();
             if (!string.IsNullOrWhiteSpace(path))
             {
-                this.ScriptText = fileService.FileReadToEnd(path);
+                var file = fileService.LoadExperimentFile(path);
+                this.ScriptText = file.Script;
+                this.ScriptArgument = file.ScriptArgument;
+                this.CurrentExperimentFile = file;
+            }
+        }
+
+        private void SaveExperiment()
+        {
+            this.currentExperimentFile.Script = this.scriptText;
+            this.currentExperimentFile.ScriptArgument = this.scriptArgument;
+            fileService.SaveExperimentFile(this.CurrentExperimentFile);
+        }
+
+        private bool CanSaveExperiment()
+        {
+            return CurrentExperimentFile != null;
+        }
+
+        private void SaveExperimentAs()
+        {
+            var path = fileService.SaveFileDialog();
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                var file = fileService.CreateEmptyExperimentFile(path);
+                file.Script = this.scriptText;
+                file.ScriptArgument = this.scriptArgument;
+                fileService.SaveExperimentFile(file);
+                this.CurrentExperimentFile = file;
             }
         }
 
@@ -220,10 +272,6 @@ namespace Tune.UI.MVVM.ViewModels
             this.applicationService.Exit();
         }
 
-        private bool CanRunScript()
-        {
-            return !string.IsNullOrWhiteSpace(this.ScriptText) && this.state != MainViewModelState.Running;
-        }
 
         private async Task<bool> RunAsync(string script, string argument, DiagnosticAssemblyMode level, DiagnosticAssembyPlatform platform)
         {
