@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Tracing;
 
 namespace Tune.Core.Collectors
 {
@@ -12,5 +13,6 @@ namespace Tune.Core.Collectors
         public ulong Start { get; set; }
         public ulong Used { get; set; }
         public ulong Reserved { get; set; }
+        public EventIndex Index { get; set; }
     }
 }

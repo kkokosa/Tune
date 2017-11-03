@@ -109,7 +109,10 @@
                             <ListView ItemsSource="{Binding GCEvents}" SelectedItem="{Binding GCSelectedEvent, Mode=TwoWay}" Height="150">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Moment" DisplayMemberBinding="{Binding Moment}"/>
+                                        <GridViewColumn Header="Moment" DisplayMemberBinding="{Binding TimeStamp}"/>
+                                        <GridViewColumn Header="Generation" DisplayMemberBinding="{Binding Generation}"/>
+                                        <GridViewColumn Header="Reason" DisplayMemberBinding="{Binding Reason}"/>
+                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
                                         <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
                                     </GridView>
                                 </ListView.View>

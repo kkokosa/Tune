@@ -102,6 +102,7 @@ namespace Tune.Core.Collectors
 
             this.generationsData[evt.Generation].Add(new ClrEtwGenerationData()
             {
+                Index = evt.EventIndex,
                 TimeStamp = evt.TimeStamp,
                 Start = evt.RangeStart,
                 Used = evt.RangeUsedLength,
@@ -113,18 +114,21 @@ namespace Tune.Core.Collectors
         {
             if (!IsTargetProcess(evt)) return;
 
-            gcData.Add(new ClrEtwGcData()
-            {
-                TimeStamp = evt .TimeStamp,
-                Description = evt.Depth.ToString()
-            } );
         }
 
         private void ClrOnGcStart(GCStartTraceData evt)
         {
             if (!IsTargetProcess(evt)) return;
 
-            //var cs = gcStartTraceData.CallStack();
+            gcData.Add(new ClrEtwGcData()
+            {
+                Index = evt.EventIndex,
+                TimeStamp = evt.TimeStamp,
+                Generation = evt.Depth,
+                Reason = evt.Reason,
+                Type = evt.Type,
+                Description = $"Count: {evt.Count}"
+            });
         }
 
         private void ClrOnGcHeapStats(GCHeapStatsTraceData evt)
@@ -133,6 +137,7 @@ namespace Tune.Core.Collectors
 
             heapStatsData.Add(new ClrEtwHeapStatsData()
             {
+                Index = evt.EventIndex,
                 TimeStamp = evt.TimeStamp,
                 GenerationSize0 = evt.GenerationSize0,
                 GenerationSize1 = evt.GenerationSize1,

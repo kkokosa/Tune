@@ -108,7 +108,7 @@ namespace Tune.UI.MVVM.ViewModels
 
         private void GCDataClick(ChartPoint obj)
         {
-            this.GCSelectedEvent = this.GCEvents.First();// obj.Instance as DateViewModel;
+            //this.GCSelectedEvent = this.GCEvents.First();// obj.Instance as DateViewModel;
         }
 
         public string Title
@@ -193,7 +193,7 @@ namespace Tune.UI.MVVM.ViewModels
             set;
         }
 
-        public ObservableCollection<DateViewModel> GCEvents
+        public ObservableCollection<Core.Collectors.ClrEtwGcData> GCEvents
         {
             get;
             set;
@@ -296,7 +296,7 @@ namespace Tune.UI.MVVM.ViewModels
                     Y = 0.0,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Top,
-                    UIElement = new TextBox() {Text = x.Description}
+                    UIElement = new Button() { Content = x.Generation.ToString(), Background = Brushes.White }
 
                 });
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -319,7 +319,7 @@ namespace Tune.UI.MVVM.ViewModels
                     GCSectionsLabels.AddRange(gcsLabels);
                 }
                 );
-                this.GCEvents = new ObservableCollection<DateViewModel>(dataGen0);
+                this.GCEvents = new ObservableCollection<Core.Collectors.ClrEtwGcData>(assembly.GcData);
 
 
 
