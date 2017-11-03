@@ -85,7 +85,7 @@ namespace Tune.UI.MVVM.ViewModels
 
             // LiveCharts customization
             this.mapper = Mappers.Xy<DateViewModel>()
-                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
+                .X(dayModel => dayModel.DateTime.Ticks)
                 .Y(dayModel => dayModel.Value);
 
             this.GraphDataGC = new SeriesCollection();
@@ -235,12 +235,12 @@ namespace Tune.UI.MVVM.ViewModels
                 var dataGen2 = assembly.Generation2DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
                 var gcs = assembly.GCsDataPoints.Select(x => new AxisSection()
                 {
-                    SectionOffset = (double)x.DateTime.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks / TimeSpan.FromHours(1).Ticks,
-                    SectionWidth = (double)TimeSpan.FromMilliseconds(1.0).Ticks / TimeSpan.FromHours(1).Ticks
+                    SectionOffset = (double)x.DateTime.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks,
+                    SectionWidth = (double)TimeSpan.FromMilliseconds(1.0).Ticks
                 });
                 var gcsLabels = assembly.GCsDataPoints.Select(x => new VisualElement
                 {
-                    X = (double) x.DateTime.Ticks / TimeSpan.FromHours(1).Ticks,
+                    X = (double) x.DateTime.Ticks,
                     Y = 0.0,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -296,7 +296,7 @@ namespace Tune.UI.MVVM.ViewModels
         public Func<double, string> XFormatter {
             get
             {
-                return value => new System.DateTime((long) ((value < 0.0 ? 0.0 : value)* TimeSpan.FromHours(1).Ticks)).ToString("hh:mm:ss.ffff");
+                return value => new System.DateTime((long) ((value < 0.0 ? 0.0 : value))).ToString("hh:mm:ss.ffff");
             } 
         }
 
