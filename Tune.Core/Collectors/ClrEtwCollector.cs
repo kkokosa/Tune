@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,35 +27,66 @@ namespace Tune.Core.Collectors
             new List<ClrEtwGenerationData>()
         };
         private const string providerName = "Microsoft-Windows-DotNETRuntime";
-        private const string sessioName = "Tune-DotNetRuntimeSession";
+        private const string sessionName = "Tune-DotNetRuntimeSession";
 
         private bool stopped;
         private TraceEventSession session;
+        private TraceEventSession kernelSession;
 
         public void Start()
         {
-            var cancellationTokenSource = new CancellationTokenSource();
-            var token = cancellationTokenSource.Token;
-            Task.Run(RunAsync, token);
+            RunAsync();
+        }
+
+        public void Stop()
+        {
+            using (var rundownSession = new TraceEventSession(sessionName + "Rundown", "data.clrRundown.etl"))
+            {
+                rundownSession.EnableProvider(ClrRundownTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrRundownTraceEventParser.Keywords.Default);
+                // Poll until 2 second goes by without growth.  
+                for (var prevLength = new FileInfo("data.clrRundown.etl").Length; ;)
+                {
+                    Thread.Sleep(2000);
+                    var newLength = new FileInfo("data.clrRundown.etl").Length;
+                    if (newLength == prevLength) break;
+                    prevLength = newLength;
+                }
+            }
+
+            // TODO: Currenty not aware of any more sophisticated control, when hosting sub-process it will wait for timeout without new events after sub-process ends
+            //Thread.Sleep(4000);
+            stopped = true;
+            session?.Dispose();
+            kernelSession?.Dispose();
+            TraceEventSession.MergeInPlace("data.etl", TextWriter.Null);
+
+
         }
 
         public List<ClrEtwHeapStatsData> HeapStatsData => this.heapStatsData;
         public List<ClrEtwGcData> GcData => this.gcData;
         public List<ClrEtwGenerationData>[] GenerationsData => this.generationsData;
 
-        private Task RunAsync()
+        private void RunAsync()
         {
+            var elevated = TraceEventSession.IsElevated();
+
             var eventSourceGuid = TraceEventProviders.GetProviderGuidByName(providerName);
-            session = new TraceEventSession(sessioName);
+            session = new TraceEventSession(sessionName, "data.etl");
+            kernelSession = new TraceEventSession(KernelTraceEventParser.KernelSessionName, "data.kernel.etl");
+
+            kernelSession.EnableKernelProvider(KernelTraceEventParser.Keywords.ImageLoad | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread);
+
             var options = new TraceEventProviderOptions() { StacksEnabled = true };
-            session.EnableProvider(eventSourceGuid, TraceEventLevel.Verbose, ulong.MaxValue, options);
+            //session.EnableProvider(eventSourceGuid, TraceEventLevel.Verbose, ulong.MaxValue, options);
             session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.Default);
-            session.Source.Clr.GCHeapStats += ClrOnGcHeapStats;
-            session.Source.Clr.GCStart += ClrOnGcStart;
-            session.Source.Clr.GCStop += ClrOnGcStop;
-            session.Source.Clr.GCGenerationRange += ClrOnGcGenerationRange;
-            session.Source.Process();
-            return Task.CompletedTask;
+            session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.GC, options);
+
+            //session.Source.Clr.GCHeapStats += ClrOnGcHeapStats;
+            //session.Source.Clr.GCStart += ClrOnGcStart;
+            //session.Source.Clr.GCStop += ClrOnGcStop;
+            //session.Source.Clr.GCGenerationRange += ClrOnGcGenerationRange;
+            //session.Source.Process();
         }
 
         private void ClrOnGcGenerationRange(GCGenerationRangeTraceData evt)
@@ -103,11 +135,9 @@ namespace Tune.Core.Collectors
             });
         }
 
-        public void Stop()
+        private bool IsTargetProcess(TraceEvent evt)
         {
-            stopped = true;
-            session?.Stop();
-            session?.Dispose();
+            return Process.GetCurrentProcess().Id == evt.ProcessID;
         }
 
         public void Dispose()
@@ -116,11 +146,6 @@ namespace Tune.Core.Collectors
             {
                 Stop();
             }
-        }
-
-        private bool IsTargetProcess(TraceEvent evt)
-        {
-            return Process.GetCurrentProcess().Id == evt.ProcessID;
         }
     }
 }
