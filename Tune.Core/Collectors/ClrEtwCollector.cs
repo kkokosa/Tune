@@ -42,9 +42,10 @@ namespace Tune.Core.Collectors
         {
             using (var rundownSession = new TraceEventSession(sessionName + "Rundown", "data.clrRundown.etl"))
             {
-                rundownSession.EnableProvider(ClrRundownTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrRundownTraceEventParser.Keywords.Default);
+                rundownSession.EnableProvider(ClrRundownTraceEventParser.ProviderGuid, TraceEventLevel.Verbose,
+                    (ulong) ClrRundownTraceEventParser.Keywords.Default);
                 // Poll until 2 second goes by without growth.  
-                for (var prevLength = new FileInfo("data.clrRundown.etl").Length; ;)
+                for (var prevLength = new FileInfo("data.clrRundown.etl").Length;;)
                 {
                     Thread.Sleep(2000);
                     var newLength = new FileInfo("data.clrRundown.etl").Length;
@@ -60,7 +61,20 @@ namespace Tune.Core.Collectors
             kernelSession?.Dispose();
             TraceEventSession.MergeInPlace("data.etl", TextWriter.Null);
 
+            //var traceLog = TraceLog.OpenOrConvert("data.etl");
+            //var simpleTraceLogProcess = traceLog.Processes.LastProcessWithID(Process.GetCurrentProcess().Id);
+            //foreach (var data in simpleTraceLogProcess.EventsInProcess)
+            //{
+            //}
 
+            using (var source = new ETWTraceEventSource("data.etl"))
+            {
+                source.Clr.GCHeapStats += ClrOnGcHeapStats;
+                source.Clr.GCStart += ClrOnGcStart;
+                source.Clr.GCStop += ClrOnGcStop;
+                source.Clr.GCGenerationRange += ClrOnGcGenerationRange;
+                source.Process();
+            }
         }
 
         public List<ClrEtwHeapStatsData> HeapStatsData => this.heapStatsData;
@@ -77,16 +91,9 @@ namespace Tune.Core.Collectors
 
             kernelSession.EnableKernelProvider(KernelTraceEventParser.Keywords.ImageLoad | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread);
 
-            var options = new TraceEventProviderOptions() { StacksEnabled = true };
-            //session.EnableProvider(eventSourceGuid, TraceEventLevel.Verbose, ulong.MaxValue, options);
+            var optionsWithStacks = new TraceEventProviderOptions() { StacksEnabled = true };
             session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.Default);
-            session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.GC, options);
-
-            //session.Source.Clr.GCHeapStats += ClrOnGcHeapStats;
-            //session.Source.Clr.GCStart += ClrOnGcStart;
-            //session.Source.Clr.GCStop += ClrOnGcStop;
-            //session.Source.Clr.GCGenerationRange += ClrOnGcGenerationRange;
-            //session.Source.Process();
+            session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.GC, optionsWithStacks);
         }
 
         private void ClrOnGcGenerationRange(GCGenerationRangeTraceData evt)
