@@ -27,6 +27,8 @@ namespace Tune.UI.MVVM.ViewModels
         public System.DateTime DateTime { get; set; }
         public double Value { get; set; }
         public string Description { get; set; }
+
+        public string Moment => DateTime.ToString("hh:mm:ss.ffff");
     }
 
     public class MainViewModel : ViewModelBase
@@ -95,7 +97,7 @@ namespace Tune.UI.MVVM.ViewModels
 
         private void GCDataClick(ChartPoint obj)
         {
-            this.GCSelectedEvent = obj.Instance as DateViewModel;
+            this.GCSelectedEvent = this.GCEvents.First();// obj.Instance as DateViewModel;
         }
 
         public string Title
@@ -230,7 +232,7 @@ namespace Tune.UI.MVVM.ViewModels
                 string result = assembly.Execute(argument);
                 this.IlText = assembly.DumpIL();
                 this.AsmText = assembly.DumpASM();
-                var dataGen0 = assembly.Generation0DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
+                var dataGen0 = assembly.Generation0DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value, Description = x.Description});
                 var dataGen1 = assembly.Generation1DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
                 var dataGen2 = assembly.Generation2DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
                 var gcs = assembly.GCsDataPoints.Select(x => new AxisSection()

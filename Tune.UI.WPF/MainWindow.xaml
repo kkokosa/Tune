@@ -104,6 +104,17 @@
                                     </lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                             </lvc:CartesianChart>
+                            <ListView ItemsSource="{Binding GCEvents}" SelectedItem="{Binding GCSelectedEvent, Mode=TwoWay}" Height="150">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Moment" DisplayMemberBinding="{Binding Moment}"/>
+                                        <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
+                                    </GridView>
+                                </ListView.View>
+                                <i:Interaction.Behaviors>
+                                    <behaviours:ScrollIntoViewForListView />
+                                </i:Interaction.Behaviors>
+                            </ListView>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>

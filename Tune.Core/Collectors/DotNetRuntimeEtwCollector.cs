@@ -72,7 +72,7 @@ namespace Tune.Core.Collectors
         {
             if (!IsTargetProcess(evt)) return;
 
-            generation0SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize0 });
+            generation0SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize0, Description = $"Gen0 {evt.ThreadID}"});
             generation1SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize1 });
             generation2SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize2 });
         }

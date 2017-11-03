@@ -128,6 +128,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
+    <Compile Include="Behaviours\ScrollIntoViewForListView.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Content Include="Samples\ScriptSample01.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
