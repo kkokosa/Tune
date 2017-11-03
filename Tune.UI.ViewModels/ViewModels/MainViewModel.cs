@@ -214,6 +214,7 @@ namespace Tune.UI.MVVM.ViewModels
 
         private async void RunScript()
         {
+            LogText = string.Empty;
             UpdateLog("Running started.");
             this.State = MainViewModelState.Running;
             var cancellationTokenSource = new CancellationTokenSource();

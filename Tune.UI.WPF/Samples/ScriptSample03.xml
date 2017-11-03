@@ -10,7 +10,7 @@ namespace Samples
 {
     public class Echoer
     {
-        // Suggested input to visualize long-running GC is 4000
+        // Suggested input to visualize long-running GC is 4000 or longer
         public string Write(string input)
         {
             int size = int.Parse(input);
@@ -34,6 +34,6 @@ namespace Samples
     ]]>
   </Script>
   <ScriptArgument>
-    4000   
+    2000   
   </ScriptArgument>
 </Experiment>
