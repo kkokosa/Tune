@@ -93,13 +93,14 @@
                 <TabItem Header="Graphs">
                     <ScrollViewer>
                         <StackPanel HorizontalAlignment="Stretch" Height="Auto">
-                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}" DataClickCommand="{Binding GCDataClickCommand}"
-                                                Zoom="X" Pan="X">
+                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}" VisualElements="{Binding GCSectionsLabels}"
+                                                DataClickCommand="{Binding GCDataClickCommand}"
+                                                Zoom="X" Pan="X" DisableAnimations="True" >
                                 <lvc:CartesianChart.AxisY>
                                     <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>                                
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis LabelFormatter="{Binding XFormatter}" Sections="{Binding GCSections}">
+                                    <lvc:Axis LabelFormatter="{Binding XFormatter}" Sections="{Binding GCSections}" ShowLabels="True">
                                     </lvc:Axis>
                                 </lvc:CartesianChart.AxisX>
                             </lvc:CartesianChart>

@@ -12,6 +12,7 @@ using Microsoft.Diagnostics.Tracing.Session;
 
 namespace Tune.Core.Collectors
 {
+    // https://github.com/Microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/TraceEvent/TraceEvent/40_SimpleTraceLog.cs
     class DotNetRuntimeEtwCollector : IDisposable
     {
         private List<DiagnosticDataPoint> generation0SizeSeries = new List<DiagnosticDataPoint>();

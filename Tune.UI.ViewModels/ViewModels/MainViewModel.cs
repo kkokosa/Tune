@@ -10,8 +10,12 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Configurations;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using Tune.Core;
 using Tune.UI.MVVM.Services;
@@ -86,6 +90,7 @@ namespace Tune.UI.MVVM.ViewModels
 
             this.GraphDataGC = new SeriesCollection();
             this.GCSections = new SectionsCollection();
+            this.GCSectionsLabels = new VisualElementsCollection();
         }
 
         private void GCDataClick(ChartPoint obj)
@@ -162,6 +167,12 @@ namespace Tune.UI.MVVM.ViewModels
             private set;
         }
 
+        public VisualElementsCollection GCSectionsLabels
+        {
+            get;
+            private set;
+        }
+
         public ObservableCollection<DateViewModel> GCEvents
         {
             get;
@@ -227,17 +238,23 @@ namespace Tune.UI.MVVM.ViewModels
                     SectionOffset = (double)x.DateTime.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks / TimeSpan.FromHours(1).Ticks,
                     SectionWidth = (double)TimeSpan.FromMilliseconds(1.0).Ticks / TimeSpan.FromHours(1).Ticks
                 });
+                var gcsLabels = assembly.GCsDataPoints.Select(x => new VisualElement
+                {
+                    X = (double) x.DateTime.Ticks / TimeSpan.FromHours(1).Ticks,
+                    Y = 0.0,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    UIElement = new TextBox() {Text = x.Description}
+
+                });
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
-                    var seriesGen0 = new LineSeries(mapper) { Title= "Gen0", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 10 };
-                    seriesGen0.Values = new ChartValues<DateViewModel>();
-                    seriesGen0.Values.AddRange(dataGen0);
-                    var seriesGen1 = new LineSeries(mapper) { Title = "Gen1", LineSmoothness = 0 };
-                    seriesGen1.Values = new ChartValues<DateViewModel>();
-                    seriesGen1.Values.AddRange(dataGen1);
-                    var seriesGen2 = new LineSeries(mapper) { Title = "Gen2", LineSmoothness = 0 };
-                    seriesGen2.Values = new ChartValues<DateViewModel>();
-                    seriesGen2.Values.AddRange(dataGen2);
+                    var seriesGen0 = new LineSeries(mapper) { Title= "Gen0", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 6 };
+                    seriesGen0.Values = dataGen0.AsChartValues();
+                    var seriesGen1 = new LineSeries(mapper) { Title = "Gen1", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 6 };
+                    seriesGen1.Values = dataGen1.AsChartValues();
+                    var seriesGen2 = new LineSeries(mapper) { Title = "Gen2", LineSmoothness = 0, PointGeometry = DefaultGeometries.Circle, PointGeometrySize = 6 };
+                    seriesGen2.Values = dataGen2.AsChartValues();
                     GraphDataGC.Clear();
                     GraphDataGC.Add(seriesGen0);
                     GraphDataGC.Add(seriesGen1);
@@ -245,9 +262,15 @@ namespace Tune.UI.MVVM.ViewModels
 
                     GCSections.Clear();
                     GCSections.AddRange(gcs);
+
+                    GCSectionsLabels.Clear();
+                    GCSectionsLabels.AddRange(gcsLabels);
                 }
                 );
                 this.GCEvents = new ObservableCollection<DateViewModel>(dataGen0);
+
+
+
                 this.RaisePropertyChanged(nameof(GCEvents));
                 //
                 UpdateLog("Script processing ended.");
