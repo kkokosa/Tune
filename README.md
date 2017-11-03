@@ -23,11 +23,6 @@ As you can see, it is using parts of [SharpDevelop](http://www.icsharpcode.net/)
 Requirements:
 * Visual Studio 2015
 * [Debugging Tools for Windows](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/) installed - look at post-build event
-* [DevExpress](https://www.devexpress.com/Products/NET/Controls/WinForms/) installed - trial is enough (this dependency will be removed shortly)
-
-If you do not want to install trial of DevExpress to build Tune, you may download compiled program from:
-
-* [Tune 0.2 (Release x64)](https://1drv.ms/u/s!ApZOZuEUCC2DjZhc0vmj9P-6JCmqOQ)
 
 Additional info and examples:
 * [The Ultimate .NET Experiment – open source project](http://tooslowexception.com/the-ultimate-net-experiment-project/)

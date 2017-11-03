@@ -1,0 +1,135 @@
+﻿<Window x:Class="Tune.UI.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:enums="clr-namespace:Tune.Core;assembly=Tune.Core"
+        xmlns:behaviours="clr-namespace:Tune.UI.WPF.Behaviours"
+        xmlns:extensions="clr-namespace:Tune.UI.WPF.Extensions"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Height="820" Width="1132" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="24"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.ColumnSpan="2">
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Command="{Binding LoadExperimentCommand}"></MenuItem>
+                    <MenuItem Header="_Save" Command="{Binding SaveExperimentCommand}"></MenuItem>
+                    <MenuItem Header="S_ave as..." Command="{Binding SaveExperimentAsCommand}"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="E_xit" Command="{Binding ExitCommand}"></MenuItem>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <StatusBar HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Width="Auto" Grid.ColumnSpan="2"/>
+        <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="114"></RowDefinition>
+            </Grid.RowDefinitions>
+            <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                Name="ScriptEditor"
+                FontFamily="Consolas"
+                SyntaxHighlighting="C#"
+                FontSize="10pt"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                Grid.Row="0" Grid.Column="0" Margin="5,0,5,0" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                <i:Interaction.Behaviors>
+                    <behaviours:AvalonEditBehaviour EditorText="{Binding ScriptText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </i:Interaction.Behaviors>
+            </avalonEdit:TextEditor>
+            <GridSplitter Grid.Row="0" Grid.Column="1" Width="5" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="2" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
+            <TabControl Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="0" >
+                <TabItem Header="Log">
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="HTML"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding LogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
+                </TabItem>
+                <TabItem Header="IL">
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="C#"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding IlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
+                </TabItem>
+                <TabItem Header="ASM">
+                    <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                                           FontFamily="Consolas"
+                                           SyntaxHighlighting="C#"
+                                           FontSize="10pt"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                           Margin="3" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" IsReadOnly="True">
+                        <i:Interaction.Behaviors>
+                            <behaviours:AvalonEditBehaviour EditorText="{Binding AsmText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </i:Interaction.Behaviors>
+                    </avalonEdit:TextEditor>
+                </TabItem>
+                <TabItem Header="Graphs">
+                    <ScrollViewer>
+                        <StackPanel HorizontalAlignment="Stretch" Height="Auto">
+                            <lvc:CartesianChart Height="300" Series="{Binding GraphDataGC}" VisualElements="{Binding GCSectionsLabels}"
+                                                DataClickCommand="{Binding GCDataClickCommand}"
+                                                Zoom="X" Pan="X" DisableAnimations="True" >
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>                                
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis LabelFormatter="{Binding XFormatter}" Sections="{Binding GCSections}" ShowLabels="True">
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                            </lvc:CartesianChart>
+                            <ListView ItemsSource="{Binding GCEvents}" SelectedItem="{Binding GCSelectedEvent, Mode=TwoWay}" Height="150">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Moment" DisplayMemberBinding="{Binding TimeStamp}"/>
+                                        <GridViewColumn Header="Generation" DisplayMemberBinding="{Binding Generation}"/>
+                                        <GridViewColumn Header="Reason" DisplayMemberBinding="{Binding Reason}"/>
+                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                                        <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
+                                    </GridView>
+                                </ListView.View>
+                                <i:Interaction.Behaviors>
+                                    <behaviours:ScrollIntoViewForListView />
+                                </i:Interaction.Behaviors>
+                            </ListView>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+            <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
+                <TextBox Margin="5" Text="{Binding ScriptArgument, Mode=TwoWay}" FontFamily="Consolas" Height="24" VerticalContentAlignment="Center"/>
+                <ComboBox Margin="5,0,5,5" SelectedValue="{Binding AssemblyMode}" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssemblyMode}}}" />
+                <ComboBox Margin="5,0,5,5" SelectedIndex="0" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssembyPlatform}}}" IsEnabled="False" />
+                <Button Margin="5,0,5,5" Content="Run" Command="{Binding RunScriptCommand}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
