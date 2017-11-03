@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -46,22 +47,31 @@ namespace Tune.Core.Collectors
             session.Source.Clr.GCHeapStats += ClrOnGcHeapStats;
             session.Source.Clr.GCStart += ClrOnGcStart;
             session.Source.Clr.GCStop += ClrOnGcStop;
+            session.Source.Clr.GCGenerationRange += ClrOnGcGenerationRange;
             session.Source.Process();
             return Task.CompletedTask;
         }
 
+        private void ClrOnGcGenerationRange(GCGenerationRangeTraceData evt)
+        {
+        }
+
         private void ClrOnGcStop(GCEndTraceData evt)
         {
+            if (!IsTargetProcess(evt)) return;
+
             garbageCollectionSeries.Add(new DiagnosticDataPoint() {DateTime = evt .TimeStamp, Description = evt.Depth.ToString()} );
         }
 
-        private void ClrOnGcStart(GCStartTraceData gcStartTraceData)
+        private void ClrOnGcStart(GCStartTraceData evt)
         {
             //var cs = gcStartTraceData.CallStack();
         }
 
         private void ClrOnGcHeapStats(GCHeapStatsTraceData evt)
         {
+            if (!IsTargetProcess(evt)) return;
+
             generation0SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize0 });
             generation1SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize1 });
             generation2SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize2 });
@@ -80,6 +90,11 @@ namespace Tune.Core.Collectors
             {
                 Stop();
             }
+        }
+
+        private bool IsTargetProcess(TraceEvent evt)
+        {
+            return Process.GetCurrentProcess().Id == evt.ProcessID;
         }
     }
 }

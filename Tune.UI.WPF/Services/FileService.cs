@@ -14,7 +14,7 @@ namespace Tune.UI.WPF.Services
         public string OpenFileDialog(string defaultPath)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = defaultPath;
+            openFileDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             if (openFileDialog.ShowDialog() == true)
                 return openFileDialog.FileName;
             else

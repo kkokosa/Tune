@@ -129,7 +129,12 @@
     </ApplicationDefinition>
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
-    <Resource Include="Samples\ScriptSample01.cs" />
+    <Content Include="Samples\ScriptSample01.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ScriptSample03.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\LogService.cs" />
