@@ -14,16 +14,15 @@ using Microsoft.Diagnostics.Tracing.Session;
 namespace Tune.Core.Collectors
 {
     // https://github.com/Microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/TraceEvent/TraceEvent/40_SimpleTraceLog.cs
-    class DotNetRuntimeEtwCollector : IDisposable
+    class ClrEtwCollector : IDisposable
     {
-        private List<DiagnosticDataPoint> generation0SizeSeries = new List<DiagnosticDataPoint>();
-        private List<DiagnosticDataPoint> generation1SizeSeries = new List<DiagnosticDataPoint>();
-        private List<DiagnosticDataPoint> generation2SizeSeries = new List<DiagnosticDataPoint>();
-        private List<DiagnosticDataPoint> garbageCollectionSeries = new List<DiagnosticDataPoint>();
+        private readonly List<ClrEtwGcData> gcData = new List<ClrEtwGcData>();
+        private readonly List<ClrEtwHeapStatsData> heapStatsData = new List<ClrEtwHeapStatsData>();
         private const string providerName = "Microsoft-Windows-DotNETRuntime";
         private const string sessioName = "Tune-DotNetRuntimeSession";
-        private TraceEventSession session;
+
         private bool stopped;
+        private TraceEventSession session;
 
         public void Start()
         {
@@ -32,10 +31,8 @@ namespace Tune.Core.Collectors
             Task.Run(RunAsync, token);
         }
 
-        public List<DiagnosticDataPoint> Generation0SizeSeries => this.generation0SizeSeries;
-        public List<DiagnosticDataPoint> Generation1SizeSeries => this.generation1SizeSeries;
-        public List<DiagnosticDataPoint> Generation2SizeSeries => this.generation2SizeSeries;
-        public List<DiagnosticDataPoint> GarbageCollectionSeries => this.garbageCollectionSeries;
+        public List<ClrEtwHeapStatsData> HeapStatsData => this.heapStatsData;
+        public List<ClrEtwGcData> GcData => this.gcData;
 
         private Task RunAsync()
         {
@@ -60,7 +57,11 @@ namespace Tune.Core.Collectors
         {
             if (!IsTargetProcess(evt)) return;
 
-            garbageCollectionSeries.Add(new DiagnosticDataPoint() {DateTime = evt .TimeStamp, Description = evt.Depth.ToString()} );
+            gcData.Add(new ClrEtwGcData()
+            {
+                TimeStamp = evt .TimeStamp,
+                Description = evt.Depth.ToString()
+            } );
         }
 
         private void ClrOnGcStart(GCStartTraceData evt)
@@ -72,9 +73,15 @@ namespace Tune.Core.Collectors
         {
             if (!IsTargetProcess(evt)) return;
 
-            generation0SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize0, Description = $"Gen0 {evt.ThreadID}"});
-            generation1SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize1 });
-            generation2SizeSeries.Add(new DiagnosticDataPoint() { DateTime = evt.TimeStamp, Value = evt.GenerationSize2 });
+            heapStatsData.Add(new ClrEtwHeapStatsData()
+            {
+                TimeStamp = evt.TimeStamp,
+                GenerationSize0 = evt.GenerationSize0,
+                GenerationSize1 = evt.GenerationSize1,
+                GenerationSize2 = evt.GenerationSize2,
+                GenerationSize3 = evt.GenerationSize3,
+                Description = $"TID: {evt.ThreadID}"
+            });
         }
 
         public void Stop()

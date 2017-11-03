@@ -223,7 +223,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collectors\DotNetRuntimeEtwCollector.cs" />
+    <Compile Include="Collectors\ClrEtwHeapStatsData.cs" />
+    <Compile Include="Collectors\ClrEtwCollector.cs" />
+    <Compile Include="Collectors\ClrEtwGcData.cs" />
     <Compile Include="DiagnosticAssembly.cs" />
     <Compile Include="DiagnosticDataPoint.cs" />
     <Compile Include="DiagnosticEngine.cs" />

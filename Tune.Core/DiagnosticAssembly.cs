@@ -63,16 +63,14 @@ namespace Tune.Core
                 Console.SetOut(programWriter);
                 this.engine.UpdateLog($"Invoking method {mi.Name} with argument {argument}");
 
-                using (var collector = new DotNetRuntimeEtwCollector())
+                using (var collector = new ClrEtwCollector())
                 {
                     collector.Start();
                     result = mi.Invoke(obj, new object[] {argument});
                     collector.Stop();
 
-                    this.Generation0DataPoints = collector.Generation0SizeSeries;
-                    this.Generation1DataPoints = collector.Generation1SizeSeries;
-                    this.Generation2DataPoints = collector.Generation2SizeSeries;
-                    this.GCsDataPoints = collector.GarbageCollectionSeries;
+                    this.HeapStatsData = collector.HeapStatsData;
+                    this.GcData = collector.GcData;
                 }
 
                 this.engine.UpdateLog($"Script result: {result}");
@@ -87,10 +85,8 @@ namespace Tune.Core
             }
         }
 
-        public List<DiagnosticDataPoint> Generation0DataPoints { get; private set; }
-        public List<DiagnosticDataPoint> Generation1DataPoints { get; private set; }
-        public List<DiagnosticDataPoint> Generation2DataPoints { get; private set; }
-        public List<DiagnosticDataPoint> GCsDataPoints { get; private set; }
+        public List<ClrEtwHeapStatsData> HeapStatsData { get; private set; }
+        public List<ClrEtwGcData> GcData { get; private set; }
         public string DumpIL()
         {
             TextWriter ilWriter = new StringWriter();

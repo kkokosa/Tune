@@ -27,6 +27,7 @@ namespace Tune.UI.MVVM.ViewModels
         public System.DateTime DateTime { get; set; }
         public double Value { get; set; }
         public string Description { get; set; }
+        public object Tag { get; set; }
 
         public string Moment => DateTime.ToString("hh:mm:ss.ffff");
     }
@@ -232,17 +233,17 @@ namespace Tune.UI.MVVM.ViewModels
                 string result = assembly.Execute(argument);
                 this.IlText = assembly.DumpIL();
                 this.AsmText = assembly.DumpASM();
-                var dataGen0 = assembly.Generation0DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value, Description = x.Description});
-                var dataGen1 = assembly.Generation1DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
-                var dataGen2 = assembly.Generation2DataPoints.Select(x => new DateViewModel() { DateTime = x.DateTime, Value = x.Value });
-                var gcs = assembly.GCsDataPoints.Select(x => new AxisSection()
+                var dataGen0 = assembly.HeapStatsData.Select(x => new DateViewModel() { DateTime = x.TimeStamp, Value = x.GenerationSize0, Tag = x});
+                var dataGen1 = assembly.HeapStatsData.Select(x => new DateViewModel() { DateTime = x.TimeStamp, Value = x.GenerationSize1, Tag = x });
+                var dataGen2 = assembly.HeapStatsData.Select(x => new DateViewModel() { DateTime = x.TimeStamp, Value = x.GenerationSize2, Tag = x });
+                var gcs = assembly.GcData.Select(x => new AxisSection()
                 {
-                    SectionOffset = (double)x.DateTime.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks,
+                    SectionOffset = (double)x.TimeStamp.Subtract(TimeSpan.FromMilliseconds(1.0)).Ticks,
                     SectionWidth = (double)TimeSpan.FromMilliseconds(1.0).Ticks
                 });
-                var gcsLabels = assembly.GCsDataPoints.Select(x => new VisualElement
+                var gcsLabels = assembly.GcData.Select(x => new VisualElement
                 {
-                    X = (double) x.DateTime.Ticks,
+                    X = (double) x.TimeStamp.Ticks,
                     Y = 0.0,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Top,
