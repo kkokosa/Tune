@@ -127,7 +127,7 @@
             <StackPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
                 <TextBox Margin="5" Text="{Binding ScriptArgument, Mode=TwoWay}" FontFamily="Consolas" Height="24" VerticalContentAlignment="Center"/>
                 <ComboBox Margin="5,0,5,5" SelectedValue="{Binding AssemblyMode}" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssemblyMode}}}" />
-                <ComboBox Margin="5,0,5,5" SelectedIndex="0" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssembyPlatform}}}" IsEnabled="False" />
+                <ComboBox Margin="5,0,5,5" SelectedValue="{Binding AssemblyPlatform}" ItemsSource="{Binding Source={extensions:EnumBindingSource {x:Type enums:DiagnosticAssembyPlatform}}}" IsEnabled="False" />
                 <Button Margin="5,0,5,5" Content="Run" Command="{Binding RunScriptCommand}" />
             </StackPanel>
         </Grid>

@@ -66,6 +66,9 @@ namespace Tune.UI.MVVM.ViewModels
             this.scriptArgument = "<Argument>";
             this.state = MainViewModelState.Idle;
             this.mainAssembly = Assembly.GetEntryAssembly();
+            this.AssemblyPlatform = Environment.Is64BitProcess
+                ? DiagnosticAssembyPlatform.x64
+                : DiagnosticAssembyPlatform.x86;
             this.engine = new DiagnosticEngine();
             this.engine.Log += UpdateLog;
 
