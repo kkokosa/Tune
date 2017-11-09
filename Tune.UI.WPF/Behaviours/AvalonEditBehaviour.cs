@@ -57,7 +57,7 @@ namespace Tune.UI.WPF.Behaviours
                 {
                     var caretOffset = editor.CaretOffset;
                     editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-                    editor.CaretOffset = caretOffset;
+                    editor.CaretOffset = caretOffset < editor.Text.Length ? caretOffset : editor.Text.Length;
                 }
             }
         }

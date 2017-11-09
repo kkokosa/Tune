@@ -315,11 +315,18 @@ namespace Tune.UI.MVVM.ViewModels
                     GraphDataGC.Add(seriesGen1);
                     GraphDataGC.Add(seriesGen2);
 
-                    GCSections.Clear();
-                    GCSections.AddRange(gcs);
+                    try
+                    {
+                        GCSections.Clear();
+                        GCSections.AddRange(gcs);
 
-                    GCSectionsLabels.Clear();
-                    GCSectionsLabels.AddRange(gcsLabels);
+                        GCSectionsLabels.Clear();
+                        GCSectionsLabels.AddRange(gcsLabels);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        // LiveCharts throws something here...
+                    }
                 }
                 );
                 this.GCEvents = new ObservableCollection<Core.Collectors.ClrEtwGcData>(assembly.GcData);
