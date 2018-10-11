@@ -231,8 +231,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "C:\Program Files (x86)\Windows Kits\10\Debuggers\$(PlatformName)\symsrv.dll" $(TargetDir)
-xcopy /Y "C:\Program Files (x86)\Windows Kits\10\Debuggers\$(PlatformName)\dbghelp.dll" $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(SolutionDir)Assets\DbgHelp\$(PlatformName)\symsrv.dll" $(TargetDir)
+xcopy /Y "$(SolutionDir)Assets\DbgHelp\$(PlatformName)\dbghelp.dll" $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets" Condition="Exists('..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
