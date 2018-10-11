@@ -1,3 +1,5 @@
+[![Build Status](https://gritstep.visualstudio.com/Tune/_apis/build/status/kkokosa.Tune)](https://gritstep.visualstudio.com/Tune/_build/latest?definitionId=1)
+
 # Tune
 The Ultimate .NET Experiment
 
@@ -21,8 +23,7 @@ As you can see, it is using parts of [SharpDevelop](http://www.icsharpcode.net/)
 ## Building
 
 Requirements:
-* Visual Studio 2015
-* [Debugging Tools for Windows](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/) installed - look at post-build event
+* Visual Studio 2017
 
 Additional info and examples:
 * [The Ultimate .NET Experiment – open source project](http://tooslowexception.com/the-ultimate-net-experiment-project/)
