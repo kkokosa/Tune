@@ -29,7 +29,7 @@ namespace Tune.Core
             UpdateLog("Script parsed.");
 
             string assemblyName = $"assemblyName_{DateTime.Now.Ticks}";
-            OptimizationLevel compilationLevel = mode == DiagnosticAssemblyMode.Release //cbMode.SelectedItem.ToString() == "Release"
+            OptimizationLevel compilationLevel = mode == DiagnosticAssemblyMode.Release
                 ? OptimizationLevel.Release
                 : OptimizationLevel.Debug;
             Platform compilationPlatform = platform == DiagnosticAssembyPlatform.x64 ? Platform.X64 : Platform.X86;
