@@ -32,7 +32,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(buildConfiguration)\**'
+    Contents: '**\bin\$(buildPlatform)\$(buildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
     CleanTargetFolder: true
     OverWrite: true
