@@ -32,12 +32,13 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(buildPlatform)\$(buildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    Contents: '**\build\$(buildPlatform)-$(buildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)\deploy'
     CleanTargetFolder: true
     OverWrite: true
 
-- task: PublishBuildArtifacts@1
+- task: ArchiveFiles@2
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    rootFolderOrFile: '$(build.artifactstagingdirectory)\deploy'
+    archiveFile: '$(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip'
 
