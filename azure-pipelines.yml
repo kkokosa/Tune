@@ -40,7 +40,7 @@ steps:
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(build.artifactstagingdirectory)\deploy'
-    archiveFile: '$(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)\Tune-$(Build.BuildNumber).zip'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
