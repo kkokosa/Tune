@@ -10,7 +10,7 @@ The Ultimate .NET Experiment (Tune) as its purpose is to learn .NET internals an
 * after clicking Run button, the script will be compiled and executed. Additionally, it will be decompiled both to IL (Intermediate Language) and assembly code in the corresponding tabs.
 * all the time Tune is running (including time during script execution) a graph with GC data is being drawn. It shows information about generation sizes and GC occurrences (illustrated as vertical lines with the number below indicating which generation has been triggered).
 
-Note: As it is currently in very early 0.2 version, it can be treated as Proof Of Concept with many, many features still missing. But it is usable enough to have some fun with it already.
+Note: As it is currently in very early 0.3 version, it can be treated as Proof Of Concept with many, many features still missing. But it is usable enough to have some fun with it already.
 
 ## Overall architecture
 
