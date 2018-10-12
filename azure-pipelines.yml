@@ -1,3 +1,5 @@
+# Azure Pipelines should build ZIP artifact with compiled app
+
 pool:
   vmImage: 'VS2017-Win2016'
 
