@@ -42,3 +42,7 @@ steps:
     rootFolderOrFile: '$(build.artifactstagingdirectory)\deploy'
     archiveFile: '$(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
