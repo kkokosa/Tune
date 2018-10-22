@@ -96,6 +96,8 @@ namespace Tune.Core.Collectors
             session.EnableProvider(ClrTraceEventParser.ProviderGuid, TraceEventLevel.Verbose, (ulong)ClrTraceEventParser.Keywords.GC, optionsWithStacks);
         }
 
+        public static bool CanCollect => TraceEventSession.IsElevated().GetValueOrDefault();
+
         private void ClrOnGcGenerationRange(GCGenerationRangeTraceData evt)
         {
             if (!IsTargetProcess(evt)) return;
