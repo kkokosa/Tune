@@ -11,9 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Tune.Core.Collectors;
 
 namespace Tune.Core
@@ -61,17 +59,16 @@ namespace Tune.Core
             {
                 TextWriter programWriter = new StringWriter();
                 Console.SetOut(programWriter);
+
                 this.engine.UpdateLog($"Invoking method {mi.Name} with argument {argument}");
-
-                using (var collector = new ClrEtwCollector())
+                if (ClrEtwCollector.CanCollect == false)
                 {
-                    collector.Start();
-                    result = mi.Invoke(obj, new object[] {argument});
-                    collector.Stop();
-
-                    this.HeapStatsData = collector.HeapStatsData;
-                    this.GcData = collector.GcData;
-                    this.GenerationsData = collector.GenerationsData;
+                    this.engine.UpdateLog("Running as non-elevated account. ETW data won't be available.");
+                    result = Run(argument, mi, obj);
+                }
+                else
+                {
+                    result = RunWithETWCollector(argument, mi, obj);
                 }
 
                 this.engine.UpdateLog($"Script result: {result}");
@@ -84,6 +81,28 @@ namespace Tune.Core
                 this.engine.UpdateLog($"Script execution failed: {e.ToString()}");
                 return e.ToString();
             }
+        }
+
+        private object Run(string argument, MethodInfo mi, object obj)
+        {
+            return mi.Invoke(obj, new object[] {argument});
+        }
+
+        private object RunWithETWCollector(string argument, MethodInfo mi, object obj)
+        {
+            object result;
+            using (var collector = new ClrEtwCollector())
+            {
+                collector.Start();
+                result = Run(argument, mi, obj);
+                collector.Stop();
+
+                this.HeapStatsData = collector.HeapStatsData;
+                this.GcData = collector.GcData;
+                this.GenerationsData = collector.GenerationsData;
+            }
+
+            return result;
         }
 
         public List<ClrEtwGenerationData>[] GenerationsData { get; set; } = new List<ClrEtwGenerationData>[4];
@@ -119,7 +138,7 @@ namespace Tune.Core
                     ClrRuntime runtime = target.ClrVersions.Single().CreateRuntime();
                     var appDomain = runtime.AppDomains[0];
                     var module = appDomain.Modules.LastOrDefault(m => m.AssemblyName != null && m.AssemblyName.StartsWith(assemblyName));
-                    
+
                     asmWriter.WriteLine(
                         $"; {clrInfo.ModuleInfo.ToString()} ({clrInfo.Flavor} {clrInfo.Version})");
                     asmWriter.WriteLine(
@@ -144,14 +163,14 @@ namespace Tune.Core
                         asmWriter.WriteLine($";    IsArray:     {typeClr.IsArray}");
                         asmWriter.WriteLine($";    IsEnum:      {typeClr.IsEnum}");
                         asmWriter.WriteLine($";    IsPrimitive: {typeClr.IsPrivate}");
-                        asmWriter.WriteLine( ";    Fields:");
-                        asmWriter.WriteLine( ";        {0,6} {1,16} {2,20} {3,4}", "Offset", "Name", "Type", "Size");
+                        asmWriter.WriteLine(";    Fields:");
+                        asmWriter.WriteLine(";        {0,6} {1,16} {2,20} {3,4}", "Offset", "Name", "Type", "Size");
                         var orderedFields = typeClr.Fields.ToList().OrderBy(x => x.Offset);
                         foreach (var field in orderedFields)
                         {
                             asmWriter.WriteLine($";        {field.Offset,6} {field.Name,16} {field.Type.Name,20} {field.Size,4}");
                         }
-                        
+
                         ClrHeap heap = runtime.Heap;
 
                         foreach (ClrMethod method in typeClr.Methods)
