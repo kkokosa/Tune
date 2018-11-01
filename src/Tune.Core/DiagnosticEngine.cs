@@ -4,12 +4,9 @@ using Microsoft.Diagnostics.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Tune.Core.Paths;
+using Tune.Core.References;
 
 namespace Tune.Core
 {
@@ -18,33 +15,59 @@ namespace Tune.Core
         public delegate void LogHandler(string message);
         public event LogHandler Log;
 
+        IAssemblyPathsRepository assemblyRepository;
+
         public DiagnosticEngine()
         {
             this.nativeTarget = new NativeTarget(Process.GetCurrentProcess().Id);
+            this.assemblyRepository = new AssemblyPathsRepository();
         }
 
         public DiagnosticAssembly Compile(string script, DiagnosticAssemblyMode mode, DiagnosticAssembyPlatform platform)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(script);
             UpdateLog("Script parsed.");
+            ReferenceWalker walker = new ReferenceWalker();
+            walker.Visit(syntaxTree.GetRoot());
 
             string assemblyName = $"assemblyName_{DateTime.Now.Ticks}";
-            OptimizationLevel compilationLevel = mode == DiagnosticAssemblyMode.Release
-                ? OptimizationLevel.Release
-                : OptimizationLevel.Debug;
-            Platform compilationPlatform = platform == DiagnosticAssembyPlatform.x64 ? Platform.X64 : Platform.X86;
-            CSharpCompilation compilation = CSharpCompilation.Create(
-                assemblyName,
-                new[] { syntaxTree },
-                new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Vector).Assembly.Location) },
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
-                    optimizationLevel: compilationLevel,
-                    allowUnsafe: true,
-                    platform: compilationPlatform));
 
-            var result = new DiagnosticAssembly(this, assemblyName, compilation);
-            return result;
+            CSharpCompilation compilation = CSharpCompilation
+               .Create(assemblyName)
+               .WithOptions(CreateCompilationOptions(mode, platform))
+               .AddSyntaxTrees(new[] { syntaxTree })
+               .AddReferences(GetMetadataReferences(walker.References, platform));
+            
+            return new DiagnosticAssembly(this, assemblyName, compilation); ;
+        }
+
+        private MetadataReference[] GetMetadataReferences(IEnumerable<string> referencesNames, DiagnosticAssembyPlatform platform)
+        {
+            List<MetadataReference> references = new List<MetadataReference>();
+            references.Add(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+            foreach (var referenceName in referencesNames)
+            {
+                var assemblyPath = assemblyRepository.GetAssemblyPathBy(referenceName, platform);
+                if (!string.IsNullOrEmpty(assemblyPath))
+                {
+                    references.Add(MetadataReference.CreateFromFile(assemblyPath));
+                }
+            }
+            return references.ToArray();
+        }
+
+        private CSharpCompilationOptions CreateCompilationOptions(DiagnosticAssemblyMode mode, DiagnosticAssembyPlatform platform)
+        {
+            OptimizationLevel compilationLevel = mode == DiagnosticAssemblyMode.Release
+            ? OptimizationLevel.Release
+            : OptimizationLevel.Debug;
+
+            Platform compilationPlatform = platform == DiagnosticAssembyPlatform.x64 ? Platform.X64 : Platform.X86;
+
+            return new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+                  optimizationLevel: compilationLevel,
+                  allowUnsafe: true,
+                  platform: compilationPlatform);
         }
 
         public void UpdateLog(string message)

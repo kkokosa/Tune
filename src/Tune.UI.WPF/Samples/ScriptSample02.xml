@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Experiment>
+  <Script>
+    <![CDATA[
+//#r System.Core
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Samples
+{
+    public class Echoer
+    {
+        public string Write(string message)
+        {
+            var xx = new List<int>().SingleOrDefault();
+            return message;
+        }
+    }
+}
+    ]]>
+  </Script>
+  <ScriptArgument>
+    Hello world!    
+  </ScriptArgument>
+</Experiment>
