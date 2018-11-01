@@ -223,6 +223,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\DiagnosticAssembyPlatformExtension.cs" />
+    <Compile Include="Paths\AssemblyPathsRepository.cs" />
     <Compile Include="Collectors\ClrEtwGenerationData.cs" />
     <Compile Include="Collectors\ClrEtwHeapStatsData.cs" />
     <Compile Include="Collectors\ClrEtwCollector.cs" />
@@ -231,6 +233,8 @@
     <Compile Include="DiagnosticEngine.cs" />
     <Compile Include="NativeTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="References\ReferenceWalker.cs" />
+    <Compile Include="References\ReferenceParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

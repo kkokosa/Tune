@@ -152,6 +152,9 @@
     <Compile Include="Behaviours\AvalonEditBehaviour.cs" />
     <Compile Include="Behaviours\ScrollIntoViewForListView.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
+    <Content Include="Samples\ScriptSample02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Samples\ScriptSample03.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
